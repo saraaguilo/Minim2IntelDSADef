@@ -50,7 +50,7 @@ public class GameManagerImpl implements GameManager {
     }
     public User Login(String email, String password) throws UserNotRegisteredException, IncorrectPasswordException {
         User user1 = UsersMap.get(email);
-        if (user1!=null) {
+        if (user1 != null) {
             if (!password.equals(user1.getPassword())) {
                 logger.warn("Incorrect password");
                 throw new IncorrectPasswordException();

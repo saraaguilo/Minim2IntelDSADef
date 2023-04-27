@@ -10,8 +10,8 @@ public class User {
     String password;
 
     public User() {};
-    public User(String idUser, String name, String surname, String email, String password){
-        this.idUser = idUser;
+    public User(String name, String surname, String email, String password){
+        this.idUser = RandomUtils.getId();
         this.name = name;
         this.surname = surname;
         this.email = email;
