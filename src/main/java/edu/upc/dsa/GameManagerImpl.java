@@ -19,6 +19,7 @@ public class GameManagerImpl implements GameManager {
 
     private  GameManagerImpl() {
         this.users = new LinkedList<>();
+        UsersMap = new HashMap<String, User>();
     }
     public static GameManager getInstance() {
         if (instance==null) instance = new GameManagerImpl();
@@ -34,7 +35,6 @@ public class GameManagerImpl implements GameManager {
 
     @Override
     public User Register(User user) throws EmailAlreadyInUseException {
-        logger.info("Adding a user");
         User user1 = UsersMap.get(user.getEmail());
         if (user1 == null)
         {
@@ -61,5 +61,8 @@ public class GameManagerImpl implements GameManager {
             }
         } else
             throw new UserNotRegisteredException();
+    }
+    public List<User> getUsers(){
+        return users;
     }
 }

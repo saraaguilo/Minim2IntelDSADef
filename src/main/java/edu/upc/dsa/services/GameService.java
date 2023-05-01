@@ -23,29 +23,33 @@ public class GameService {
 
     private GameManager manager;
 
-    public GameService() {
+    public GameService() throws EmailAlreadyInUseException {
         this.manager = GameManagerImpl.getInstance();
+        if (manager.getUsers().size()==0){
+            manager.Register(new User("Toni","Boté","toni@upc.edu","12345"));
+            manager.Register(new User("Agustín","Tapia","agus@upc.edu","20236"));
+        }
     }
 
     @POST
     @ApiOperation(value = "User registration", notes = "Register a new user")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "User successfully registered"),
+            @ApiResponse(code = 201, message = "User successfully registered", response = User.class),
             @ApiResponse(code = 404, message = "This email address is already in use"),
             @ApiResponse(code = 500, message = "Empty credentials")
     })
     @Path("/register")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response Register(User user) {
+    public Response Register(User user) throws EmailAlreadyInUseException {
         if (user.getName().equals("") || user.getSurname().equals("") || user.getEmail().equals("") || user.getPassword().equals(""))
             return Response.status(500).entity(user).build();
-        try {
-            this.manager.Register(user);
-            return Response.status(201).entity(user).build();
-        } catch (EmailAlreadyInUseException e) {
-            return Response.status(404).entity(user).build();
+            try {
+                this.manager.Register(user);
+                return Response.status(201).entity(user).build();
+            } catch (EmailAlreadyInUseException e) {
+                return Response.status(404).entity(user).build();
+            }
         }
-    }
     @POST
     @ApiOperation(value = "User login", notes = "log in using credentials")
     @ApiResponses(value = {
