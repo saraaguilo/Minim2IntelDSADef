@@ -41,15 +41,16 @@ public class GameService {
     @Path("/register")
     @Produces(MediaType.APPLICATION_JSON)
     public Response Register(User user) throws EmailAlreadyInUseException {
-        if (user.getName().equals("") || user.getSurname().equals("") || user.getEmail().equals("") || user.getPassword().equals(""))
-            return Response.status(500).entity(user).build();
-            try {
-                this.manager.Register(user);
-                return Response.status(201).entity(user).build();
-            } catch (EmailAlreadyInUseException e) {
-                return Response.status(404).entity(user).build();
-            }
+        /**if (user.getName().equals("") || user.getSurname().equals("") || user.getEmail().equals("") || user.getPassword().equals(""))
+            return Response.status(500).entity(user).build();**/
+        try{
+            this.manager.Register(new User(user.getName(), user.getSurname(), user.getEmail(), user.getPassword()));
+            return Response.status(201).entity(user).build();
+        } catch (EmailAlreadyInUseException e){
+            return Response.status(404).entity(user).build();
         }
+
+    }
     @POST
     @ApiOperation(value = "User login", notes = "log in using credentials")
     @ApiResponses(value = {

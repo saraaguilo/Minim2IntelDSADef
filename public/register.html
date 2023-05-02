@@ -10,37 +10,30 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+        $(document).ready(function () {
+            $("#registerButton").click(function () {
+                var dataBody=
+                    {
+                        name: $("#name").val(),
+                        surname: $("#surname").val(),
+                        email: $("#email").val(),
+                        password: $("#password").val()
+                    }
 
-        function returnNow() {
-            $(location).attr('href', "index.html");
-        }
+                var URL = "/dsaApp/game/register";
+                $.post({
+                    url: URL,
+                    data: JSON.stringify(dataBody),
+                    contentType: 'application/json; charset=utf-8'
+                })
+                    .done(function (data, status) {
+                        alert("Registration successful");
 
-        $(document).ready(function(){
-            $("#registerButton").click(function(){
-                var name=$("#name").val();
-                var surname=$("#surname").val();
-                var email=$("#email").val();
-                var password=$("#password").val();
-                if (name==="" || surname==="" || email==="" || password===""){
-                    alert("Fulfill all the gaps!");
-                }
-                else{
-                    $.ajax({
-                        contentType: "application/json",
-                        type: 'POST',
-                        url: '/dsaApp/game/register',
-                        data: JSON.stringify({"name": name, "surname": surname, "email":email,"password":password}),
-                        dataType: 'json',
-                        success: function(json){
-
-                            alert("User registered correctly");
-                            $(location).attr('href', "index.html");
-                        },
-                        error: function (json){
-                            alert("Mail already is in use!");
-                        }
                     })
-                }
+                    .fail(function (xhr, err) {
+                        alert("Email already in use");
+                        location.reload();
+                    })
             });
         });
     </script>
