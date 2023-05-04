@@ -40,4 +40,9 @@ public class GameManagerTest {
         this.manager.login("jordi@upc.edu","123");
         Assert.assertEquals(2,manager.LoggedNumber());;
     }
+    @Test
+    public void addItemsTest(){
+        this.manager.Shop();
+        Assert.assertEquals(2,manager.ItemNumber());
+    }
 }

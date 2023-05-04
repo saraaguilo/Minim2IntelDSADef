@@ -8,14 +8,17 @@ import edu.upc.dsa.exceptions.IncorrectPasswordException;
 import edu.upc.dsa.exceptions.UserNotRegisteredException;
 import edu.upc.dsa.models.Credentials;
 import edu.upc.dsa.models.User;
+import edu.upc.dsa.models.Item;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Api(value = "/game", description = "Endpoint to Game Service")
 @Path("/game")
@@ -72,6 +75,19 @@ public class GameService {
         else {
             return Response.status(404).entity(user).build();
         }
+    }
+    @GET
+    @ApiOperation(value = "View the items from the shop", notes = "View items")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response = Item.class, responseContainer="List"),
+    })
+    @Path("/shop")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getShop() {
+
+        List<Item> items = this.manager.Shop();
+        GenericEntity<List<Item>> entity = new GenericEntity<List<Item>>(items) {};
+        return Response.status(201).entity(entity).build()  ;
     }
 
 }
