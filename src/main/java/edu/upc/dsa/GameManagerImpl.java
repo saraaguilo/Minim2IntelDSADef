@@ -8,6 +8,7 @@ import java.util.List;
 import edu.upc.dsa.exceptions.EmailAlreadyInUseException;
 import edu.upc.dsa.exceptions.IncorrectPasswordException;
 import edu.upc.dsa.exceptions.UserNotRegisteredException;
+import edu.upc.dsa.models.Item;
 import edu.upc.dsa.models.User;
 import org.apache.log4j.Logger;
 
@@ -16,9 +17,15 @@ public class GameManagerImpl implements GameManager {
     final static Logger logger = Logger.getLogger(GameManagerImpl.class);
     private HashMap<String, User> UsersMap;
     protected List<User> users;
-
+    protected List<Item> items;
+    protected List<User> logged;
+    public List<User> getUsers(){
+        return users;
+    }
     public GameManagerImpl() {
         this.users = new LinkedList<>();
+        this.logged = new LinkedList<>();
+        this.items = new LinkedList<>();
         UsersMap = new HashMap<String, User>();
     }
     public static GameManager getInstance() {
@@ -48,7 +55,8 @@ public class GameManagerImpl implements GameManager {
             throw new EmailAlreadyInUseException();
         }
     }
-    public User Login(String email, String password) throws UserNotRegisteredException, IncorrectPasswordException {
+    @Override
+    public User login(String email, String password) throws UserNotRegisteredException, IncorrectPasswordException {
         User user1 = UsersMap.get(email);
         if (user1 != null) {
             if (!password.equals(user1.getPassword())) {
@@ -57,16 +65,25 @@ public class GameManagerImpl implements GameManager {
             }
             else {
                 logger.warn("User logged in");
+                this.logged.add(user1);
                 return user1;
             }
         } else
             throw new UserNotRegisteredException();
     }
-    public List<User> getUsers(){
-        return users;
+    public List<Item> Shop ()
+    {
+        items.add (new Item("Poción","Recupera 50 puntos de salud",15));
+        items.add(new Item("Espada","Herramienta que aumenta el daño en 15 puntos",35));
+        logger.info("Items added to the Shop");
+        return items;
     }
     @Override
     public int UserNumber() {
         return this.users.size();
     }
+    @Override
+    public int ItemNumber(){return this.items.size();}
+    @Override
+    public int LoggedNumber(){return this.logged.size();}
 }

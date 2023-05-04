@@ -65,7 +65,7 @@ public class GameService {
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response Login(Credentials credentials) throws IncorrectPasswordException, UserNotRegisteredException {
-        User user = this.manager.Login(credentials.getEmail(), credentials.getPassword());
+        User user = this.manager.login(credentials.getEmail(), credentials.getPassword());
         if (user!= null) {
             return Response.status(201).entity(user).build();
         }
