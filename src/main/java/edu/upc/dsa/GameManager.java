@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface GameManager {
     public int size();
-    User Register(User user) throws EmailAlreadyInUseException;
+    User register(User user) throws EmailAlreadyInUseException;
     User Login(String email, String password) throws UserNotRegisteredException, IncorrectPasswordException;
     public List<User> getUsers();
+
+    int UserNumber();
 }

@@ -26,8 +26,10 @@ public class GameService {
     public GameService() throws EmailAlreadyInUseException {
         this.manager = GameManagerImpl.getInstance();
         if (manager.getUsers().size()==0){
-            manager.Register(new User("Toni","Boté","toni@upc.edu","12345"));
-            manager.Register(new User("Agustín","Tapia","agus@upc.edu","20236"));
+            manager.register(new User("Toni","Boté","toni@upc.edu","12345"));
+            manager.register(new User("Jordi","Pié","jordi@upc.edu","123"));
+            manager.register(new User("Anna","Sabater","anna@upc.edu","1234"));
+            manager.register(new User("Sara","Aguiló","sara@upc.edu","123456"));
         }
     }
 
@@ -36,18 +38,19 @@ public class GameService {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "User successfully registered", response = User.class),
             @ApiResponse(code = 404, message = "This email address is already in use"),
-            @ApiResponse(code = 500, message = "Empty credentials")
     })
     @Path("/register")
     @Produces(MediaType.APPLICATION_JSON)
     public Response Register(User user) throws EmailAlreadyInUseException {
-        /**if (user.getName().equals("") || user.getSurname().equals("") || user.getEmail().equals("") || user.getPassword().equals(""))
-            return Response.status(500).entity(user).build();**/
         try{
-            this.manager.Register(new User(user.getName(), user.getSurname(), user.getEmail(), user.getPassword()));
+
+            this.manager.register(new User(user.getName(), user.getSurname(), user.getEmail(), user.getPassword()));
             return Response.status(201).entity(user).build();
+
         } catch (EmailAlreadyInUseException e){
+
             return Response.status(404).entity(user).build();
+
         }
 
     }
