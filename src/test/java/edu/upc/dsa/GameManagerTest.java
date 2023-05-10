@@ -3,6 +3,7 @@ package edu.upc.dsa;
 import edu.upc.dsa.exceptions.EmailAlreadyInUseException;
 import edu.upc.dsa.exceptions.IncorrectPasswordException;
 import edu.upc.dsa.exceptions.UserNotRegisteredException;
+import edu.upc.dsa.models.Credentials;
 import edu.upc.dsa.models.User;
 import junit.framework.Assert;
 import org.apache.log4j.Logger;
@@ -23,7 +24,7 @@ public class GameManagerTest {
         this.manager = new GameManagerImpl();
         this.manager.register(new User("Toni","Boté","toni@upc.edu","12345"));
         this.manager.register(new User("Jordi","Pié","jordi@upc.edu","123"));
-        this.manager.login("toni@upc.edu","12345");
+        this.manager.login(new Credentials("toni@upc.edu","12345"));
     }
 
     @After
@@ -37,7 +38,7 @@ public class GameManagerTest {
     }
     @Test
     public void loginUserTest() throws IncorrectPasswordException, UserNotRegisteredException{
-        this.manager.login("jordi@upc.edu","123");
+        this.manager.login(new Credentials("jordi@upc.edu","123"));
         Assert.assertEquals(2,manager.LoggedNumber());;
     }
     @Test

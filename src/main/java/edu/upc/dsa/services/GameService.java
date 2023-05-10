@@ -44,14 +44,13 @@ public class GameService {
     })
     @Path("/register")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response Register(User user) throws EmailAlreadyInUseException {
+    public Response register(User user) throws EmailAlreadyInUseException {
         try{
-
             this.manager.register(new User(user.getName(), user.getSurname(), user.getEmail(), user.getPassword()));
             return Response.status(201).entity(user).build();
 
         } catch (EmailAlreadyInUseException e){
-
+            e.printStackTrace();
             return Response.status(404).entity(user).build();
 
         }
@@ -68,7 +67,7 @@ public class GameService {
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response Login(Credentials credentials) throws IncorrectPasswordException, UserNotRegisteredException {
-        User user = this.manager.login(credentials.getEmail(), credentials.getPassword());
+        User user = this.manager.login(credentials);
         if (user!= null) {
             return Response.status(201).entity(user).build();
         }

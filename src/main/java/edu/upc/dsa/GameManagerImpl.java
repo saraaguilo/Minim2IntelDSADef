@@ -8,6 +8,7 @@ import java.util.List;
 import edu.upc.dsa.exceptions.EmailAlreadyInUseException;
 import edu.upc.dsa.exceptions.IncorrectPasswordException;
 import edu.upc.dsa.exceptions.UserNotRegisteredException;
+import edu.upc.dsa.models.Credentials;
 import edu.upc.dsa.models.Item;
 import edu.upc.dsa.models.User;
 import org.apache.log4j.Logger;
@@ -56,25 +57,22 @@ public class GameManagerImpl implements GameManager {
         }
     }
     @Override
-    public User login(String email, String password) throws UserNotRegisteredException, IncorrectPasswordException {
-        User user1 = UsersMap.get(email);
-        if (user1 != null) {
-            if (!password.equals(user1.getPassword())) {
-                logger.warn("Incorrect password");
-                throw new IncorrectPasswordException();
-            }
-            else {
-                logger.warn("User logged in");
-                this.logged.add(user1);
-                return user1;
-            }
-        } else
+    public User login(Credentials credentials) throws UserNotRegisteredException, IncorrectPasswordException {
+        User user = UsersMap.get(credentials.getEmail());
+        if (user == null) {
+
             throw new UserNotRegisteredException();
+        }
+        if (!user.getPassword().equals(credentials.getPassword())) {
+
+            throw new IncorrectPasswordException();
+        }
+        return user;
     }
     public List<Item> Shop ()
     {
-        items.add (new Item("Poción","Recupera 50 puntos de salud",15));
-        items.add(new Item("Espada","Herramienta que aumenta el daño en 15 puntos",35));
+        items.add (new Item("Potion","Recover 50 health points",15));
+        items.add(new Item("Sword","Increase damage by 20 points",35));
         logger.info("Items added to the Shop");
         return items;
     }
