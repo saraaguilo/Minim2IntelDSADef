@@ -1,3 +1,4 @@
+
 package edu.upc.dsa;
 
 import edu.upc.dsa.exceptions.EmailAlreadyInUseException;
