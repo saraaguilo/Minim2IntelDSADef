@@ -26,8 +26,8 @@ public class GameService {
     public GameService() throws EmailAlreadyInUseException {
         this.manager = GameManagerImpl.getInstance();
         if (manager.getUsers().size()==0){
-            manager.Register(new User("Toni","Boté","toni@upc.edu","12345"));
-            manager.Register(new User("Agustín","Tapia","agus@upc.edu","20236"));
+            manager.register(new User("Toni","Boté","toni@upc.edu","12345"));
+            manager.register(new User("Agustín","Tapia","agus@upc.edu","20236"));
         }
     }
 
@@ -44,7 +44,7 @@ public class GameService {
         /**if (user.getName().equals("") || user.getSurname().equals("") || user.getEmail().equals("") || user.getPassword().equals(""))
             return Response.status(500).entity(user).build();**/
         try{
-            this.manager.Register(new User(user.getName(), user.getSurname(), user.getEmail(), user.getPassword()));
+            this.manager.register(new User(user.getName(), user.getSurname(), user.getEmail(), user.getPassword()));
             return Response.status(201).entity(user).build();
         } catch (EmailAlreadyInUseException e){
             return Response.status(404).entity(user).build();
@@ -52,22 +52,23 @@ public class GameService {
 
     }
     @POST
-    @ApiOperation(value = "User login", notes = "log in using credentials")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response= User.class),
-            @ApiResponse(code = 404, message = "Incorrect credentials")
-
-    })
-
     @Path("/login")
+    @ApiOperation(value = "User login", notes = "Authenticate an existing user")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "User successfully authenticated", response = Credentials.class),
+            @ApiResponse(code = 404, message = "User not found"),
+            @ApiResponse(code = 401, message = "Incorrect password")
+    })
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response Login(Credentials credentials) throws IncorrectPasswordException, UserNotRegisteredException {
-        User user = this.manager.Login(credentials.getEmail(), credentials.getPassword());
-        if (user!= null) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response Login(Credentials credentials) {
+        try {
+            User user = this.manager.login(credentials);
             return Response.status(201).entity(user).build();
-        }
-        else {
-            return Response.status(404).entity(user).build();
+        } catch (UserNotRegisteredException e) {
+            return Response.status(404).build();
+        } catch (IncorrectPasswordException e) {
+            return Response.status(401).build();
         }
     }
 

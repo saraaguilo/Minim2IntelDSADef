@@ -8,6 +8,7 @@ import java.util.List;
 import edu.upc.dsa.exceptions.EmailAlreadyInUseException;
 import edu.upc.dsa.exceptions.IncorrectPasswordException;
 import edu.upc.dsa.exceptions.UserNotRegisteredException;
+import edu.upc.dsa.models.Credentials;
 import edu.upc.dsa.models.User;
 import org.apache.log4j.Logger;
 
@@ -34,7 +35,7 @@ public class GameManagerImpl implements GameManager {
     }
 
     @Override
-    public User Register(User user) throws EmailAlreadyInUseException {
+    public User register(User user) throws EmailAlreadyInUseException {
         User user1 = UsersMap.get(user.getEmail());
         if (user1 == null)
         {
@@ -48,21 +49,21 @@ public class GameManagerImpl implements GameManager {
             throw new EmailAlreadyInUseException();
         }
     }
-    public User Login(String email, String password) throws UserNotRegisteredException, IncorrectPasswordException {
-        User user1 = UsersMap.get(email);
-        if (user1 != null) {
-            if (!password.equals(user1.getPassword())) {
-                logger.warn("Incorrect password");
-                throw new IncorrectPasswordException();
-            }
-            else {
-                logger.warn("User logged in");
-                return user1;
-            }
-        } else
+
+    public User login(Credentials credentials) throws UserNotRegisteredException, IncorrectPasswordException {
+        User user = UsersMap.get(credentials.getEmail());
+        if (user == null) {
             throw new UserNotRegisteredException();
+        }
+        if (!user.getPassword().equals(credentials.getPassword())) {
+            throw new IncorrectPasswordException();
+        }
+        return user;
     }
+
     public List<User> getUsers(){
         return users;
     }
+
+
 }
