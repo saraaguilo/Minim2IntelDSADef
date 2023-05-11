@@ -11,18 +11,21 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-                var url = "http://localhost:8080/dsaApp/game/shop";
+            var url = "http://localhost:8080/dsaApp/game/shop";
                 $.get(url, function (data) {
-                    for (var key = 0, size = data.length; key < size; key++) {
+                    for (var key = 0; key < 2; key++) {
                         $("#tabla").append("<tr><td>" + data[key].name + "</td><td>" + data[key].description + "</td><td>" + data[key].price + "</td></tr>");
 
                     }
                 });
+
+            $("#logoutButton").click(function () {
+                location.href = "/index.html"
             });
+        });
     </script>
 </head>
 <body>
-
 <div class="container mt-3"style="text-align:center">
     <h3>Shop</h3>
     <p>These are the items available for purchase!</p>
@@ -37,10 +40,13 @@
         </tr>
         </thead>
         <tbody>
-
         </tbody>
-
     </table>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block" id = "logoutButton"> Log Out</button>
+        <div class="signup_link" style="text-align:center">
+        </div>
+    </div>
 </div>
 </body>
 </html>
