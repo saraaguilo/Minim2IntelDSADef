@@ -48,7 +48,6 @@ public class GameService {
         try{
             this.manager.register(new User(user.getName(), user.getSurname(), user.getEmail(), user.getPassword()));
             return Response.status(201).entity(user).build();
-
         } catch (EmailAlreadyInUseException e){
             e.printStackTrace();
             return Response.status(404).entity(user).build();
@@ -57,24 +56,27 @@ public class GameService {
 
     }
     @POST
-    @ApiOperation(value = "User login", notes = "log in using credentials")
+    @ApiOperation(value = "User login", notes = "Authenticate an existing user")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response= User.class),
-            @ApiResponse(code = 404, message = "Incorrect credentials")
-
+            @ApiResponse(code = 201, message = "User successfully authenticated", response = User.class),
+            @ApiResponse(code = 404, message = "User not found"),
+            @ApiResponse(code = 401, message = "Incorrect password"),
     })
-
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response Login(Credentials credentials) throws IncorrectPasswordException, UserNotRegisteredException {
-        User user = this.manager.login(credentials);
-        if (user!= null) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(Credentials credentials) throws UserNotRegisteredException, IncorrectPasswordException {
+        try {
+            User user = this.manager.login(credentials);
             return Response.status(201).entity(user).build();
-        }
-        else {
-            return Response.status(404).entity(user).build();
+        } catch (UserNotRegisteredException e) {
+            return Response.status(404).build();
+        } catch (IncorrectPasswordException e) {
+            return Response.status(401).build();
         }
     }
+
+
     @GET
     @ApiOperation(value = "View the items from the shop", notes = "View items")
     @ApiResponses(value = {

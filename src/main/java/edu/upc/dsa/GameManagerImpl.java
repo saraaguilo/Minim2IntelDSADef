@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 public class GameManagerImpl implements GameManager {
     private static GameManager instance;
     final static Logger logger = Logger.getLogger(GameManagerImpl.class);
-    private HashMap<String, User> UsersMap;
+    private HashMap<String, User> usersMap;
     protected List<User> users;
     protected List<Item> items;
     protected List<User> logged;
@@ -27,7 +27,7 @@ public class GameManagerImpl implements GameManager {
         this.users = new LinkedList<>();
         this.logged = new LinkedList<>();
         this.items = new LinkedList<>();
-        UsersMap = new HashMap<String, User>();
+        usersMap = new HashMap<>();
     }
     public static GameManager getInstance() {
         if (instance==null) instance = new GameManagerImpl();
@@ -43,28 +43,31 @@ public class GameManagerImpl implements GameManager {
 
     @Override
     public User register(User user) throws EmailAlreadyInUseException {
-        User user1 = UsersMap.get(user.getEmail());
+        User user1 = usersMap.get(user.getEmail());
         if (user1 == null)
         {
             this.users.add(user);
-            this.UsersMap.put(user.getEmail(), user);
+            this.usersMap.put(user.getEmail(), user);
             logger.info("User registered");
             return user;
         } else
         {
-            logger.info("This email is already being used");
+            logger.warn("This email is already being used");
             throw new EmailAlreadyInUseException();
         }
     }
+
     @Override
     public User login(Credentials credentials) throws UserNotRegisteredException, IncorrectPasswordException {
-        User user = UsersMap.get(credentials.getEmail());
-        if (user == null) {
+        String email = credentials.getEmail();
 
+        User user = usersMap.get(email);
+        if (user == null) {
+            logger.warn("User not registered");
             throw new UserNotRegisteredException();
         }
         if (!user.getPassword().equals(credentials.getPassword())) {
-
+            logger.warn("Incorrect password");
             throw new IncorrectPasswordException();
         }
         return user;
