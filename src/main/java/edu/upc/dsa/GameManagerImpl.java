@@ -1,11 +1,13 @@
 package edu.upc.dsa;
 
 import edu.upc.dsa.CRUD.FactorySession;
+import edu.upc.dsa.CRUD.IUserDAO;
 import edu.upc.dsa.CRUD.Session;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.upc.dsa.CRUD.UserDAOImpl;
 import edu.upc.dsa.exceptions.EmailAlreadyInUseException;
 import edu.upc.dsa.exceptions.IncorrectPasswordException;
 import edu.upc.dsa.exceptions.UserNotRegisteredException;
@@ -21,6 +23,7 @@ public class GameManagerImpl implements GameManager {
     protected List<User> users;
     protected List<Item> items;
     protected List<User> logged;
+    private HashMap<String, User> UsersMap;
     public List<User> getUsers(){
         return users;
     }
@@ -30,6 +33,7 @@ public class GameManagerImpl implements GameManager {
         this.logged = new LinkedList<>();
         this.items = new LinkedList<>();
         usersMap = new HashMap<>();
+        UsersMap = new HashMap<String, User>();
     }
     public static GameManager getInstance() {
         if (instance==null) instance = new GameManagerImpl();
@@ -45,51 +49,50 @@ public class GameManagerImpl implements GameManager {
 
     @Override
     public User register(User user) throws EmailAlreadyInUseException {
-        Session session = null;
-        //User user1 = usersMap.get(user.getEmail());
-        try {
-            session = FactorySession.openSession();
-            user = new User();
+        User user1 = UsersMap.get(user.getEmail());
+        if (user1 == null)
+        {
+            String name= user.getName();
+            String surname= user.getSurname();
+            String email= user.getEmail();
+            String password= user.getPassword();
+            IUserDAO userDAO = new UserDAOImpl();
+            userDAO.addUser(name, surname,email,password );
+            //this.users.add(user);
+            //this.UsersMap.put(user.getEmail(), user);
             logger.info("User registered");
-            session.save(user);
+            return user;
+        } else
+        {
+            logger.info("This email is already being used");
+            throw new EmailAlreadyInUseException();
         }
-        catch (Exception e) {
-            logger.info("Exception");
-        }
-        finally {
-            session.close();
-            logger.info("Session closed");
-        }
-        return user;
     }
-
     @Override
     public User login(Credentials credentials) throws UserNotRegisteredException, IncorrectPasswordException {
-        Session session = null;
         try {
-            session = FactorySession.openSession();
+            IUserDAO userDAO = new UserDAOImpl();
             HashMap<String, String> credentialsHash = new HashMap<>();
             credentialsHash.put("email", credentials.getEmail());
             credentialsHash.put("password", credentials.getPassword());
-            List<Object> userMatch = session.findAll(User.class, credentialsHash);
-            if (userMatch.size() == 1) {
-                logger.info("Succesful login" + credentials.getEmail());
-                User user = (User) userMatch.get(0);
-                return user;
-            } else if (userMatch.size() == 0) {
+            User user1 = userDAO.getUserByEmail(credentials.getEmail());
+            logger.info(user1.getEmail());
+            logger.info(user1.getPassword());
+            if (user1.getPassword().equals(credentials.getPassword())) {
+                logger.info("Succesful login " + credentials.getEmail());
+                return user1;
+            } else if (user1.getEmail() == null) {
                 logger.info("User not registered");
                 throw new UserNotRegisteredException();
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             logger.info("Something went wrong");
         }
-        finally {
-            session.close();
-        }
-            logger.warn("Incorrect user name or password");
-            throw new IncorrectPasswordException();
-        }
+
+        logger.warn("Incorrect user name or password");
+        throw new IncorrectPasswordException();
+    }
+
     public List<Item> Shop ()
     {
         items.add (new Item("Potion","Recover 50 health points",15));

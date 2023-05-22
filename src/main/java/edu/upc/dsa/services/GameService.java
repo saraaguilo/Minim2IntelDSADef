@@ -26,14 +26,15 @@ public class GameService {
 
     private GameManager manager;
 
+
     public GameService() throws EmailAlreadyInUseException {
         this.manager = GameManagerImpl.getInstance();
-        if (manager.getUsers().size()==0){
-            manager.register(new User("Toni","Boté","toni@upc.edu","12345"));
-            manager.register(new User("Jordi","Pié","jordi@upc.edu","123"));
-            manager.register(new User("Anna","Sabater","anna@upc.edu","1234"));
-            manager.register(new User("Sara","Aguiló","sara@upc.edu","123456"));
-        }
+        //if (manager.getUsers().size()==0){
+            //manager.register(new User("Toni","Boté","toni@upc.edu","12345"));
+            //manager.register(new User("Jordi","Pié","jordi@upc.edu","123"));
+            //manager.register(new User("Anna","Sabater","anna@upc.edu","1234"));
+            //manager.register(new User("Sara","Aguiló","sara@upc.edu","123456"));
+        //}
     }
 
     @POST
@@ -73,8 +74,8 @@ public class GameService {
             return Response.status(404).build();
         } catch (IncorrectPasswordException e) {
             return Response.status(401).build();
-        }
-    }
+        }}
+
 
 
     @GET

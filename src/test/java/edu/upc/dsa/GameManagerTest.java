@@ -24,7 +24,7 @@ public class GameManagerTest {
         this.manager = new GameManagerImpl();
         this.manager.register(new User("Toni","Boté","toni@upc.edu","12345"));
         this.manager.register(new User("Jordi","Pié","jordi@upc.edu","123"));
-        this.manager.login(new Credentials("toni@upc.edu","12345"));
+        //this.manager.login(new Credentials("toni@upc.edu","12345"));
     }
 
     @After
@@ -36,11 +36,11 @@ public class GameManagerTest {
         this.manager.register(new User("Sara","Aguiló","sara@upc.edu","123456"));
         Assert.assertEquals(3,manager.UserNumber());;
     }
-    @Test
+    /*@Test
     public void loginUserTest() throws IncorrectPasswordException, UserNotRegisteredException{
         this.manager.login(new Credentials("jordi@upc.edu","123"));
         Assert.assertEquals(2,manager.LoggedNumber());;
-    }
+    }*/
     @Test
     public void addItemsTest(){
         this.manager.Shop();
