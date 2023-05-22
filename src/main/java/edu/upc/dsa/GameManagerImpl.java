@@ -1,6 +1,7 @@
 package edu.upc.dsa;
 
-
+import edu.upc.dsa.CRUD.FactorySession;
+import edu.upc.dsa.CRUD.Session;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class GameManagerImpl implements GameManager {
     public List<User> getUsers(){
         return users;
     }
+
     public GameManagerImpl() {
         this.users = new LinkedList<>();
         this.logged = new LinkedList<>();
@@ -43,35 +45,51 @@ public class GameManagerImpl implements GameManager {
 
     @Override
     public User register(User user) throws EmailAlreadyInUseException {
-        User user1 = usersMap.get(user.getEmail());
-        if (user1 == null)
-        {
-            this.users.add(user);
-            this.usersMap.put(user.getEmail(), user);
+        Session session = null;
+        //User user1 = usersMap.get(user.getEmail());
+        try {
+            session = FactorySession.openSession();
+            user = new User();
             logger.info("User registered");
-            return user;
-        } else
-        {
-            logger.warn("This email is already being used");
-            throw new EmailAlreadyInUseException();
+            session.save(user);
         }
+        catch (Exception e) {
+            logger.info("Exception");
+        }
+        finally {
+            session.close();
+            logger.info("Session closed");
+        }
+        return user;
     }
 
     @Override
     public User login(Credentials credentials) throws UserNotRegisteredException, IncorrectPasswordException {
-        String email = credentials.getEmail();
-
-        User user = usersMap.get(email);
-        if (user == null) {
-            logger.warn("User not registered");
-            throw new UserNotRegisteredException();
+        Session session = null;
+        try {
+            session = FactorySession.openSession();
+            HashMap<String, String> credentialsHash = new HashMap<>();
+            credentialsHash.put("email", credentials.getEmail());
+            credentialsHash.put("password", credentials.getPassword());
+            List<Object> userMatch = session.findAll(User.class, credentialsHash);
+            if (userMatch.size() == 1) {
+                logger.info("Succesful login" + credentials.getEmail());
+                User user = (User) userMatch.get(0);
+                return user;
+            } else if (userMatch.size() == 0) {
+                logger.info("User not registered");
+                throw new UserNotRegisteredException();
+            }
         }
-        if (!user.getPassword().equals(credentials.getPassword())) {
-            logger.warn("Incorrect password");
+        catch (Exception e){
+            logger.info("Something went wrong");
+        }
+        finally {
+            session.close();
+        }
+            logger.warn("Incorrect user name or password");
             throw new IncorrectPasswordException();
         }
-        return user;
-    }
     public List<Item> Shop ()
     {
         items.add (new Item("Potion","Recover 50 health points",15));
