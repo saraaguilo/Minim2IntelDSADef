@@ -43,7 +43,7 @@ public class FactorySession {
 
         try {
             st = con.createStatement();
-            st.execute("INSERT INTO user (name) VALUES ('Jordi')");
+            st.execute("INSERT INTO items (name) VALUES ('Jordi')");
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

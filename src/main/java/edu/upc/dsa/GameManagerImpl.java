@@ -1,13 +1,12 @@
 package edu.upc.dsa;
 
-import edu.upc.dsa.CRUD.FactorySession;
-import edu.upc.dsa.CRUD.IUserDAO;
-import edu.upc.dsa.CRUD.Session;
+import edu.upc.dsa.CRUD.*;
+
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.upc.dsa.CRUD.UserDAOImpl;
 import edu.upc.dsa.exceptions.EmailAlreadyInUseException;
 import edu.upc.dsa.exceptions.IncorrectPasswordException;
 import edu.upc.dsa.exceptions.UserNotRegisteredException;
@@ -95,10 +94,13 @@ public class GameManagerImpl implements GameManager {
 
     public List<Item> Shop ()
     {
-        items.add (new Item("Potion","Recover 50 health points",15));
-        items.add(new Item("Sword","Increase damage by 20 points",35));
-        logger.info("Items added to the Shop");
-        return items;
+        //items.add (new Item("Potion","Recover 50 health points",15));
+        //items.add(new Item("Sword","Increase damage by 20 points",35));
+        //logger.info("Items added to the Shop");
+        IItemDAO itemDAO = new ItemDAOImpl();
+        List<Item> daoItems = itemDAO.getItems();
+        //Collections.copy(items,daoItems);
+        return daoItems;
     }
     @Override
     public int UserNumber() {

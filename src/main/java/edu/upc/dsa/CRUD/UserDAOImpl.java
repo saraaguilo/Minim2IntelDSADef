@@ -1,5 +1,6 @@
 package edu.upc.dsa.CRUD;
 
+import edu.upc.dsa.models.Item;
 import edu.upc.dsa.models.User;
 
 import java.util.HashMap;
@@ -106,12 +107,12 @@ public class UserDAOImpl implements IUserDAO {
 
 
 
-    public List<User> getEmployees() {
+    public List<Item> getItems() {
         Session session = null;
-        List<User> employeeList=null;
+        List<Item> items=null;
         try {
             session = FactorySession.openSession();
-            employeeList = session.findAll(User.class);
+            items = session.findAll(User.class);
         }
         catch (Exception e) {
             // LOG
@@ -119,7 +120,7 @@ public class UserDAOImpl implements IUserDAO {
         finally {
             session.close();
         }
-        return employeeList;
+        return items;
     }
 
 
