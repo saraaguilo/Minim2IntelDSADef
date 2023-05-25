@@ -1,14 +1,21 @@
-package edu.upc.dsa.CRUD;
+package edu.upc.dsa.CRUD.DAO;
 
+<<<<<<< HEAD:src/main/java/edu/upc/dsa/CRUD/UserDAOImpl.java
+=======
+import edu.upc.dsa.CRUD.FactorySession;
+import edu.upc.dsa.CRUD.Session;
+import edu.upc.dsa.models.Inventory;
+>>>>>>> a0ba496efee4bef845f3161437f359209c4edf79:src/main/java/edu/upc/dsa/CRUD/DAO/UserDAOImpl.java
 import edu.upc.dsa.models.Item;
 import edu.upc.dsa.models.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class UserDAOImpl implements IUserDAO {
-
+    final static Logger logger = Logger.getLogger(UserDAOImpl.class);
 
     public int addUser(String name, String surname, String email, String password) {
         Session session = null;
@@ -64,11 +71,7 @@ public class UserDAOImpl implements IUserDAO {
 
         return user;
     }
-
-
-
-
-    public void updateEmployee(int employeeID, String name, String surname, String  email, String password) {
+    /**public void updateEmployee(int employeeID, String name, String surname, String  email, String password) {
         User employee = this.getUser(employeeID);
         employee.setName(name);
         employee.setSurname(surname);
@@ -86,7 +89,7 @@ public class UserDAOImpl implements IUserDAO {
         finally {
             session.close();
         }
-    }
+    }**/
 
 
     public void deleteEmployee(int employeeID) {
@@ -105,9 +108,13 @@ public class UserDAOImpl implements IUserDAO {
 
     }
 
+<<<<<<< HEAD:src/main/java/edu/upc/dsa/CRUD/UserDAOImpl.java
 
 
     public List<Item> getItems() {
+=======
+    public List<User> getEmployees() {
+>>>>>>> a0ba496efee4bef845f3161437f359209c4edf79:src/main/java/edu/upc/dsa/CRUD/DAO/UserDAOImpl.java
         Session session = null;
         List<Item> items=null;
         try {
@@ -122,7 +129,6 @@ public class UserDAOImpl implements IUserDAO {
         }
         return items;
     }
-
 
     public List<User> getEmployeeByDept(int deptID) {
 
@@ -143,6 +149,59 @@ public class UserDAOImpl implements IUserDAO {
             session.close();
         }
         return employeeList;
+    }
+
+    public User buyItem (String item, String user){
+    Session session = null;
+    User user1 = null;
+    Item item1 = null;
+    boolean inposession = false;
+
+        try {
+            session = FactorySession.openSession();
+            user1 = (User)session.get(User.class, "NAME: ", user);
+            logger.info(user1.getName());
+            item1 = (Item) session.get(Item.class, "ITEM: ", item);
+            List<Inventory> list = new ArrayList<>();
+
+            if (user1.getMoney()>= item1.getPrice())
+            {
+                double balance = user1.getMoney()- item1.getPrice();
+                session.update(User.class, "MONEY", String.valueOf(balance),"NAME: ",user);
+                list = (List<Inventory>)session.getList(Inventory.class, "NAME: ", user);
+                int i=0;
+                while (i< list.size())
+                {
+                    if (list.get(i).getItem().equals(item))
+                    {
+                        inposession = true;
+                        int qty = list.get(i).getQuantity() +1;
+                        session.reupdate(Inventory.class, "QUANTITY", String.valueOf(qty),"USER: ",user, "ITEM", item);
+                    }
+                    i++;
+                }
+                if (inposession == false)
+                {
+                    session.save(new Inventory());
+                    session.reupdate(Inventory.class, "QUANTITY", String.valueOf(1),"USER: ",user, "ITEM: ", item);
+                }
+
+                user1= (User)session.get(User.class,"USER", user);
+
+            }
+            else
+            {
+                logger.info("Not enough money to buy item");
+
+            }
+        }
+        catch (Exception e) {
+
+        }
+        finally {
+            session.close();
+        }
+        return user1;
     }
 
 

@@ -1,12 +1,21 @@
 package edu.upc.dsa;
 
+<<<<<<< HEAD
 import edu.upc.dsa.CRUD.*;
 
 import java.util.Collections;
+=======
+import edu.upc.dsa.CRUD.DAO.IUserDAO;
+
+>>>>>>> a0ba496efee4bef845f3161437f359209c4edf79
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+<<<<<<< HEAD
+=======
+import edu.upc.dsa.CRUD.DAO.UserDAOImpl;
+>>>>>>> a0ba496efee4bef845f3161437f359209c4edf79
 import edu.upc.dsa.exceptions.EmailAlreadyInUseException;
 import edu.upc.dsa.exceptions.IncorrectPasswordException;
 import edu.upc.dsa.exceptions.UserNotRegisteredException;
