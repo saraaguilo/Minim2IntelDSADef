@@ -1,6 +1,8 @@
 package edu.upc.dsa.CRUD.util;
 
 import java.util.HashMap;
+import java.util.Objects;
+
 public class QueryHelper {
 
     public static String createQueryINSERT(Object entity) {
@@ -64,6 +66,47 @@ public class QueryHelper {
         sb.delete(sb.length()-4, sb.length()-1);
         sb.append(")");
 
+        return sb.toString();
+    }
+    public static String createQueryUPDATE(Class clase, String SET, String Where) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("UPDATE ").append(clase.getSimpleName());
+        if (Objects.equals(SET, "PASSWORD")){
+            sb.append(" SET ").append(SET);
+            sb.append(" = MD5(?) ");
+            sb.append(" WHERE ");
+            sb.append(Where);
+            sb.append(" = ?");
+        }
+        else{
+            sb.append(" SET ").append(SET);
+            sb.append(" = ? ");
+            sb.append(" WHERE ");
+            sb.append(Where);
+            sb.append(" = ?");
+        }
+        return sb.toString();
+    }
+    public static String createQueryREUPDATE(Class clase, String SET, String Where, String Where2) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("UPDATE ").append(clase.getSimpleName());
+        if (Objects.equals(SET, "PASSWORD")){
+            sb.append(" SET ").append(SET);
+            sb.append(" = MD5(?) ");
+            sb.append(" WHERE ");
+            sb.append(Where);
+            sb.append(" = ?");
+        }
+        else{
+            sb.append(" SET ").append(SET);
+            sb.append(" = ? ");
+            sb.append(" WHERE ");
+            sb.append(Where);
+            sb.append(" = ? ");
+            sb.append(" AND ");
+            sb.append(Where2);
+            sb.append(" = ?");
+        }
         return sb.toString();
     }
 

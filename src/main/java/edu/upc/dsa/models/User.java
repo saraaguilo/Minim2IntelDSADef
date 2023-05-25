@@ -8,6 +8,7 @@ public class User {
     String surname;
     String email;
     String password;
+    double money;
 
     public User() {};
     public User(String name, String surname, String email, String password){
@@ -16,6 +17,7 @@ public class User {
         this.surname = surname;
         this.email = email;
         this.password = password;
+        this.setMoney(200);
     }
     //public String getIdUser(){return idUser;}
     //public void setIdUser(String idUser){this.idUser = idUser;}
@@ -27,6 +29,9 @@ public class User {
     public void setEmail(String email){this.email = email;}
     public String getPassword(){return password;}
     public void setPassword(String password){this.password = password;}
+    public double getMoney() {return money;}
+    public void setMoney(double money) {this.money = money;}
+
 
 
 }

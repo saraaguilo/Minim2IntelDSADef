@@ -1,13 +1,12 @@
 package edu.upc.dsa;
 
-import edu.upc.dsa.CRUD.FactorySession;
-import edu.upc.dsa.CRUD.IUserDAO;
-import edu.upc.dsa.CRUD.Session;
+import edu.upc.dsa.CRUD.DAO.IUserDAO;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.upc.dsa.CRUD.UserDAOImpl;
+import edu.upc.dsa.CRUD.DAO.UserDAOImpl;
 import edu.upc.dsa.exceptions.EmailAlreadyInUseException;
 import edu.upc.dsa.exceptions.IncorrectPasswordException;
 import edu.upc.dsa.exceptions.UserNotRegisteredException;

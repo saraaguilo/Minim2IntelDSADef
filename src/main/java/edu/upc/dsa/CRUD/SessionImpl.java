@@ -50,8 +50,6 @@ public class SessionImpl implements Session {
         }
     }
 
-
-
     public Object get(Class theClass, String pk, Object value) {
         String selectQuery  = QueryHelper.createQuerySELECT(theClass, pk);
         ResultSet rs;
@@ -93,8 +91,37 @@ public class SessionImpl implements Session {
         return null;
     }
 
-    public void update(Object object) {
+    public void update(Class theClass, String SET, String valueSET, String WHERE, String valueWHERE) {
+        String updateQuery = QueryHelper.createQueryUPDATE(theClass, SET, WHERE);
+        ResultSet rs;
+        PreparedStatement pstm;
 
+        try {
+            pstm = conn.prepareStatement(updateQuery);
+            pstm.setObject(1, valueSET);
+            pstm.setObject(2, valueWHERE);
+            pstm.executeQuery();
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void reupdate(Class theClass, String SET, String valueSET, String WHERE, String valueWHERE, String WHERE2, String valueWHERE2) {
+        String updateQuery = QueryHelper.createQueryREUPDATE(theClass, SET, WHERE, WHERE2);
+        ResultSet rs;
+        PreparedStatement pstm;
+
+        try {
+            pstm = conn.prepareStatement(updateQuery);
+            pstm.setObject(1, valueSET); //son los ?
+            pstm.setObject(2, valueWHERE);
+            pstm.setObject(3, valueWHERE2);
+            pstm.executeQuery();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void delete(Object object) {
@@ -131,6 +158,11 @@ public class SessionImpl implements Session {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    @Override
+    public List<Object> query(String query, Class theClass, HashMap params) {
         return null;
     }
 
@@ -181,8 +213,40 @@ public class SessionImpl implements Session {
         return null;
     }
 
-    public List<Object> query(String query, Class theClass, HashMap params) {
+    public List<Object> getList(Class theClass, String key, Object value) {
 
+        String selectQuery =  QueryHelper.createQuerySELECT(theClass, key);
+        ResultSet rs;
+        PreparedStatement pstm;
+        List<Object> list = new LinkedList<>();
+
+        try {
+            pstm = conn.prepareStatement(selectQuery);
+            pstm.setObject(1, value);
+            rs = pstm.executeQuery();
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            int numberOfColumns = rsmd.getColumnCount();
+            while (rs.next()){
+                Object o = theClass.newInstance();
+                for (int i=1; i<=numberOfColumns; i++){
+                    String columnName = rsmd.getColumnName(i);
+                    ObjectHelper.setter(o, columnName, rs.getObject(i));
+                }
+                list.add(o);
+            }
+            return list;
+
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
         return null;
     }
+
 }
