@@ -91,5 +91,18 @@ public class GameService {
         GenericEntity<List<Item>> entity = new GenericEntity<List<Item>>(items) {};
         return Response.status(201).entity(entity).build()  ;
     }
+    @PUT
+    @ApiOperation(value = "Buy the items from the shop", notes = "Buy items")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response = User.class),
+            @ApiResponse(code = 404, message = "Something went wrong"),
+    })
+    @Path("/buyItems")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response buyItems() {
+
+
+        return null;
+    }
 
 }

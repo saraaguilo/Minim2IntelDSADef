@@ -1,10 +1,12 @@
-package edu.upc.dsa.CRUD;
+package edu.upc.dsa.CRUD.DAO;
 
+import edu.upc.dsa.CRUD.FactorySession;
+import edu.upc.dsa.CRUD.Session;
 import edu.upc.dsa.models.Item;
 import java.util.List;
 
 
-public class ItemDAOImpl implements IItemDAO{
+public class ItemDAOImpl implements IItemDAO {
 
     public Item getItemByName(String name) {
         Session session = null;

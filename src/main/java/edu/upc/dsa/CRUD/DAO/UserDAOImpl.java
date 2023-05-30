@@ -1,11 +1,9 @@
 package edu.upc.dsa.CRUD.DAO;
 
-<<<<<<< HEAD:src/main/java/edu/upc/dsa/CRUD/UserDAOImpl.java
-=======
+
 import edu.upc.dsa.CRUD.FactorySession;
 import edu.upc.dsa.CRUD.Session;
 import edu.upc.dsa.models.Inventory;
->>>>>>> a0ba496efee4bef845f3161437f359209c4edf79:src/main/java/edu/upc/dsa/CRUD/DAO/UserDAOImpl.java
 import edu.upc.dsa.models.Item;
 import edu.upc.dsa.models.User;
 
@@ -107,14 +105,7 @@ public class UserDAOImpl implements IUserDAO {
         }
 
     }
-
-<<<<<<< HEAD:src/main/java/edu/upc/dsa/CRUD/UserDAOImpl.java
-
-
     public List<Item> getItems() {
-=======
-    public List<User> getEmployees() {
->>>>>>> a0ba496efee4bef845f3161437f359209c4edf79:src/main/java/edu/upc/dsa/CRUD/DAO/UserDAOImpl.java
         Session session = null;
         List<Item> items=null;
         try {
@@ -130,6 +121,22 @@ public class UserDAOImpl implements IUserDAO {
         return items;
     }
 
+    public List<User> getEmployees() {
+
+        Session session = null;
+        List<User> employeeList=null;
+        try {
+            session = FactorySession.openSession();
+            employeeList = session.findAll(User.class);
+        }
+        catch (Exception e) {
+            // LOG
+        }
+        finally {
+            session.close();
+        }
+        return employeeList;
+    }
     public List<User> getEmployeeByDept(int deptID) {
 
         Session session = null;

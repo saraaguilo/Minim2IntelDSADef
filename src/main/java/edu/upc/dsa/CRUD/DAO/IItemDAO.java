@@ -1,4 +1,4 @@
-package edu.upc.dsa.CRUD;
+package edu.upc.dsa.CRUD.DAO;
 
 import edu.upc.dsa.models.Item;
 import edu.upc.dsa.models.User;

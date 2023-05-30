@@ -13,7 +13,7 @@
         $(document).ready(function () {
             var url = "http://localhost:8080/dsaApp/game/shop";
                 $.get(url, function (data) {
-                    for (var key = 0; key < items.size; key++) {
+                    for (var key = 0; key < 3; key++) {
                         $("#tabla").append("<tr><td>" + data[key].name + "</td><td>" + data[key].description + "</td><td>" + data[key].price + "</td></tr>");
 
                     }
@@ -21,6 +21,37 @@
 
             $("#logoutButton").click(function () {
                 location.href = "/index.html"
+            });
+
+            let item = localStorage.getItem("item");
+            $("#item").text(item);
+
+            $("#tabla").on('click','#button',function(){
+                var currentRow=$(this).closest("tr");
+                var call = currentRow.find("td:eq(0)").text();
+                alert(call);
+                var dataBody=
+                    {
+                        name: call,
+                        item: item,
+                        quantity: 1,
+
+                    }
+                var URL = "/dsaApp/game/buyItems";
+                $.post({
+                    url: URL,
+                    data: JSON.stringify(dataBody),
+                    contentType: 'application/json; charset=utf-8'
+                })
+                    .done(function (data, status) {
+                        alert("Item added to your inventory");
+                        location.reload();
+
+                    })
+                    .fail(function (xhr, err) {
+                        alert("Item added");
+                    })
+
             });
         });
     </script>
