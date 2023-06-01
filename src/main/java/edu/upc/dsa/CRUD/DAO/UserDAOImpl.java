@@ -51,6 +51,25 @@ public class UserDAOImpl implements IUserDAO {
 
         return user;
     }
+    /**public void updateUser(int id, String name, String surname, String email, String password) {
+        User user = this.getUser(id);
+        user.setName(name);
+        user.setSurname(surname);
+        user.setEmail(email);
+        user.setPassword(password);
+
+        Session session = null;
+        try {
+            session = FactorySession.openSession();
+            session.update(User.class);
+        }
+        catch (Exception e) {
+            // LOG
+        }
+        finally {
+            session.close();
+        }
+    }**/
 
     public User getUserByEmail(String email) {
         Session session = null;
@@ -69,26 +88,6 @@ public class UserDAOImpl implements IUserDAO {
 
         return user;
     }
-    /**public void updateEmployee(int employeeID, String name, String surname, String  email, String password) {
-        User employee = this.getUser(employeeID);
-        employee.setName(name);
-        employee.setSurname(surname);
-        employee.setEmail(email);
-        employee.setPassword(password);
-
-        Session session = null;
-        try {
-            session = FactorySession.openSession();
-            session.update(User.class);
-        }
-        catch (Exception e) {
-            // LOG
-        }
-        finally {
-            session.close();
-        }
-    }**/
-
 
     public void deleteEmployee(int employeeID) {
         User employee = this.getUser(employeeID);

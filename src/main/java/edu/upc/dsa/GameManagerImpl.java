@@ -98,12 +98,8 @@ public class GameManagerImpl implements GameManager {
 
     public List<Item> Shop ()
     {
-        //items.add (new Item("Potion","Recover 50 health points",15));
-        //items.add(new Item("Sword","Increase damage by 20 points",35));
-        //logger.info("Items added to the Shop");
         IItemDAO itemDAO = new ItemDAOImpl();
         List<Item> daoItems = itemDAO.getItems();
-        //Collections.copy(items,daoItems);
         return daoItems;
     }
     @Override
