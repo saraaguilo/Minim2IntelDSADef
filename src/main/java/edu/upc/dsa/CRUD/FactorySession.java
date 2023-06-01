@@ -19,8 +19,6 @@ public class FactorySession {
         return session;
     }
 
-
-
     private static Connection getConnection() {
         Connection conn = null;
         try {

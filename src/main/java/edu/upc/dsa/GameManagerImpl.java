@@ -4,6 +4,7 @@ package edu.upc.dsa;
 import edu.upc.dsa.CRUD.DAO.IItemDAO;
 import edu.upc.dsa.CRUD.DAO.IUserDAO;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,10 +12,10 @@ import java.util.List;
 
 import edu.upc.dsa.CRUD.DAO.ItemDAOImpl;
 import edu.upc.dsa.CRUD.DAO.UserDAOImpl;
-import edu.upc.dsa.exceptions.EmailAlreadyInUseException;
-import edu.upc.dsa.exceptions.IncorrectPasswordException;
-import edu.upc.dsa.exceptions.UserNotRegisteredException;
+import edu.upc.dsa.CRUD.Session;
+import edu.upc.dsa.exceptions.*;
 import edu.upc.dsa.models.Credentials;
+import edu.upc.dsa.models.Inventory;
 import edu.upc.dsa.models.Item;
 import edu.upc.dsa.models.User;
 import org.apache.log4j.Logger;
@@ -55,14 +56,13 @@ public class GameManagerImpl implements GameManager {
         User user1 = UsersMap.get(user.getEmail());
         if (user1 == null)
         {
+            String idUser = user.getIdUser();
             String name= user.getName();
             String surname= user.getSurname();
             String email= user.getEmail();
             String password= user.getPassword();
             IUserDAO userDAO = new UserDAOImpl();
-            userDAO.addUser(name, surname,email,password );
-            //this.users.add(user);
-            //this.UsersMap.put(user.getEmail(), user);
+            userDAO.addUser(idUser,name, surname,email,password );
             logger.info("User registered");
             return user;
         } else
@@ -95,7 +95,6 @@ public class GameManagerImpl implements GameManager {
         logger.warn("Incorrect user name or password");
         throw new IncorrectPasswordException();
     }
-
     public List<Item> Shop ()
     {
         IItemDAO itemDAO = new ItemDAOImpl();

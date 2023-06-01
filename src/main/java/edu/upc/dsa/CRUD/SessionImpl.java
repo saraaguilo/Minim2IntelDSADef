@@ -3,6 +3,7 @@ package edu.upc.dsa.CRUD;
 import edu.upc.dsa.CRUD.util.ObjectHelper;
 import edu.upc.dsa.CRUD.util.QueryHelper;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -91,39 +92,17 @@ public class SessionImpl implements Session {
         return null;
     }
 
-    public void update(Class theClass, String SET, String valueSET, String WHERE, String valueWHERE) {
-        String updateQuery = QueryHelper.createQueryUPDATE(theClass, SET, WHERE);
-        ResultSet rs;
-        PreparedStatement pstm;
+    public void update(Object object) throws SQLException {
+        String updateQuery = QueryHelper.createQueryUPDATE(object);
+        PreparedStatement statement = conn.prepareStatement(updateQuery);
+        int i = 1;
 
-        try {
-            pstm = conn.prepareStatement(updateQuery);
-            pstm.setObject(1, valueSET);
-            pstm.setObject(2, valueWHERE);
-            pstm.executeQuery();
-
+        for(String field: ObjectHelper.getFields(object)) {
+            statement.setObject(i++, ObjectHelper.getter(object, field));
         }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+        statement.setObject(i, ObjectHelper.getter(object, ObjectHelper.getAttributeName(object.getClass(), "id")));
+        statement.executeQuery();
     }
-    public void reupdate(Class theClass, String SET, String valueSET, String WHERE, String valueWHERE, String WHERE2, String valueWHERE2) {
-        String updateQuery = QueryHelper.createQueryREUPDATE(theClass, SET, WHERE, WHERE2);
-        ResultSet rs;
-        PreparedStatement pstm;
-
-        try {
-            pstm = conn.prepareStatement(updateQuery);
-            pstm.setObject(1, valueSET); //son los ?
-            pstm.setObject(2, valueWHERE);
-            pstm.setObject(3, valueWHERE2);
-            pstm.executeQuery();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void delete(Object object) {
 
     }
@@ -178,8 +157,6 @@ public class SessionImpl implements Session {
             for(Object v : params.values()){
                 pstm.setObject(i++, v);
             }
-
-
             pstm.executeQuery();
 
             ResultSet rs = pstm.getResultSet();

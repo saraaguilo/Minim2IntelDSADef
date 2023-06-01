@@ -1,4 +1,4 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -32,8 +32,8 @@
                     contentType: 'application/json; charset=utf-8'
                 })
                     .done(function (data, status) {
-                        //alert("Login successful " );
                         location.href = "/shop.html"
+                        sessionStorage.setItem("idUser",idUser.idUser);
                     })
                     .fail(function (xhr, err) {
                         alert(" Wrong credentials");
@@ -44,7 +44,7 @@
     </script>
 </head>
 <body>
-<div class="container mt-3"style="text-align:center" >
+<div class="container mt-3" style="text-align:center" >
     <h3>LOGIN</h3>
     <p>Type in your credentials in order to log in!</p>
     <form action="/action_page.php">
@@ -66,7 +66,6 @@
             You don't have an account? <a href="register.html">Sign up!</a>
         </div>
     </div>
-    </form>
 </div>
 </body>
 </html>

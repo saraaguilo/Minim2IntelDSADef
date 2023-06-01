@@ -1,13 +1,12 @@
 
 package edu.upc.dsa;
 
-import edu.upc.dsa.exceptions.EmailAlreadyInUseException;
-import edu.upc.dsa.exceptions.IncorrectPasswordException;
+import edu.upc.dsa.exceptions.*;
 import edu.upc.dsa.models.Credentials;
 import edu.upc.dsa.models.Item;
 import edu.upc.dsa.models.User;
-import edu.upc.dsa.exceptions.UserNotRegisteredException;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface GameManager {

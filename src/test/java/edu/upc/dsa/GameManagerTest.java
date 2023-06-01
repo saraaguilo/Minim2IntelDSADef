@@ -22,8 +22,8 @@ public class GameManagerTest {
     @Before
     public void setUp() throws EmailAlreadyInUseException, IncorrectPasswordException, UserNotRegisteredException {
         this.manager = new GameManagerImpl();
-        this.manager.register(new User("Toni","Boté","toni@upc.edu","12345"));
-        this.manager.register(new User("Jordi","Pié","jordi@upc.edu","123"));
+        this.manager.register(new User("2","Toni","Boté","toni@upc.edu","12345"));
+        this.manager.register(new User("3","Jordi","Pié","jordi@upc.edu","123"));
         //this.manager.login(new Credentials("toni@upc.edu","12345"));
     }
 
@@ -33,7 +33,7 @@ public class GameManagerTest {
     }
     @Test
     public void registerUserTest() throws EmailAlreadyInUseException{
-        this.manager.register(new User("Sara","Aguiló","sara@upc.edu","123456"));
+        this.manager.register(new User("1","Sara","Aguiló","sara@upc.edu","123456"));
         Assert.assertEquals(3,manager.UserNumber());;
     }
     /*@Test

@@ -1,37 +1,34 @@
 package edu.upc.dsa.models;
 
 public class Inventory {
-    public String item; // name of the item
-    public String user; //username of the player
-    public int quantity;
+    public String idItem;
+    public String idUser;
+    //public int quantity;
     public Inventory() {}
-    public Inventory(String item, String user)
+    public Inventory(String idUser, String idItem)
     {
-        this.item = item;
-        this.user = user;
+        this.idItem = idItem;
+        this.idUser = idUser;
     }
 
 
     public String getItem()
     {
-        return item;
+        return idItem;
     }
-
     public String getUser()
     {
-        return user;
+        return idUser;
     }
-
-    public int getQuantity(){
+    /**public int getQuantity(){
         return quantity;
+    }**/
+    public void setItem(String idItem){
+        this.idItem = idItem;
     }
-
-    public void setItem(String item){
-        this.item = item;
-    }
-    public void setUser(String user)
+    public void setUser(String idUser)
     {
-        this.user = user;
+        this.idUser = idUser;
     }
-    public void setQuantity(int quantity){ this.quantity=quantity;}
+    /**public void setQuantity(int quantity){ this.quantity=quantity;}**/
 }

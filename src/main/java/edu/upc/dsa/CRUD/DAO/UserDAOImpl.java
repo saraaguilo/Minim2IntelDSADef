@@ -3,10 +3,14 @@ package edu.upc.dsa.CRUD.DAO;
 
 import edu.upc.dsa.CRUD.FactorySession;
 import edu.upc.dsa.CRUD.Session;
+import edu.upc.dsa.exceptions.InsufficientMoneyException;
+import edu.upc.dsa.exceptions.NonExistentItemException;
+import edu.upc.dsa.exceptions.UserNotRegisteredException;
 import edu.upc.dsa.models.Inventory;
 import edu.upc.dsa.models.Item;
 import edu.upc.dsa.models.User;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,12 +19,12 @@ import org.apache.log4j.Logger;
 public class UserDAOImpl implements IUserDAO {
     final static Logger logger = Logger.getLogger(UserDAOImpl.class);
 
-    public int addUser(String name, String surname, String email, String password) {
+    public int addUser(String idUser, String name, String surname, String email, String password) {
         Session session = null;
         int employeeID = 0;
         try {
             session = FactorySession.openSession();
-            User user = new User(name, surname, email, password);
+            User user = new User(idUser,name, surname, email, password);
             session.save(user);
         }
         catch (Exception e) {
@@ -34,7 +38,7 @@ public class UserDAOImpl implements IUserDAO {
     }
 
 
-    public User getUser(int userId) {
+    public User getUser(String userId) {
         Session session = null;
         User user = null;
         try {
@@ -51,26 +55,6 @@ public class UserDAOImpl implements IUserDAO {
 
         return user;
     }
-    /**public void updateUser(int id, String name, String surname, String email, String password) {
-        User user = this.getUser(id);
-        user.setName(name);
-        user.setSurname(surname);
-        user.setEmail(email);
-        user.setPassword(password);
-
-        Session session = null;
-        try {
-            session = FactorySession.openSession();
-            session.update(User.class);
-        }
-        catch (Exception e) {
-            // LOG
-        }
-        finally {
-            session.close();
-        }
-    }**/
-
     public User getUserByEmail(String email) {
         Session session = null;
         User user = null;
@@ -89,7 +73,7 @@ public class UserDAOImpl implements IUserDAO {
         return user;
     }
 
-    public void deleteEmployee(int employeeID) {
+    public void deleteEmployee(String employeeID) {
         User employee = this.getUser(employeeID);
         Session session = null;
         try {
@@ -156,61 +140,24 @@ public class UserDAOImpl implements IUserDAO {
         }
         return employeeList;
     }
-
-    public User buyItem (String item, String user){
-    Session session = null;
-    User user1 = null;
-    Item item1 = null;
-    boolean inposession = false;
+    public void buyItem(String idItem, String idUser) throws InsufficientMoneyException, NonExistentItemException, UserNotRegisteredException, SQLException {
+        Session session = null;
+        IItemDAO itemDAO = new ItemDAOImpl();
+        Item item = itemDAO.getItem(idItem);
+        User user = getUser(idUser);
 
         try {
             session = FactorySession.openSession();
-            user1 = (User)session.get(User.class, "NAME: ", user);
-            logger.info(user1.getName());
-            item1 = (Item) session.get(Item.class, "ITEM: ", item);
-            List<Inventory> list = new ArrayList<>();
-
-            if (user1.getMoney()>= item1.getPrice())
-            {
-                double balance = user1.getMoney()- item1.getPrice();
-                session.update(User.class, "MONEY", String.valueOf(balance),"NAME: ",user);
-                list = (List<Inventory>)session.getList(Inventory.class, "NAME: ", user);
-                int i=0;
-                while (i< list.size())
-                {
-                    if (list.get(i).getItem().equals(item))
-                    {
-                        inposession = true;
-                        int qty = list.get(i).getQuantity() +1;
-                        session.reupdate(Inventory.class, "QUANTITY", String.valueOf(qty),"USER: ",user, "ITEM", item);
-                    }
-                    i++;
-                }
-                if (inposession == false)
-                {
-                    session.save(new Inventory());
-                    session.reupdate(Inventory.class, "QUANTITY", String.valueOf(1),"USER: ",user, "ITEM: ", item);
-                }
-
-                user1= (User)session.get(User.class,"USER", user);
-
-            }
-            else
-            {
-                logger.info("Not enough money to buy item");
-
-            }
-        }
-        catch (Exception e) {
-
-        }
-        finally {
+            user.buyItem(item);
+        } catch (InsufficientMoneyException e) {
+            logger.warn("Not enough money exception");
+            throw new InsufficientMoneyException();
+        } finally {
+            logger.info("Item bought");
+            session.update(user);
+            Inventory inventory= new Inventory(idUser,idItem);
+            session.save(inventory);
             session.close();
         }
-        return user1;
     }
-
-
-
-
 }

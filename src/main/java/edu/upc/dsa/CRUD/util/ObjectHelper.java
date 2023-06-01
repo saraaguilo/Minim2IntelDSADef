@@ -56,5 +56,23 @@ public class ObjectHelper {
     public static String getMethodName(String property) {
         return property.substring(0,1).toUpperCase()+property.substring(1);
     }
+    public static String getAttributeName(Class theClass, String attribute) {
+        Field field = (Field)Arrays.stream(theClass.getDeclaredFields()).filter((x) -> {
+            return x.getName().matches("(?i).*"+ attribute +".*");
+        }).findFirst().orElse((Field) null);
+
+        assert field != null;
+
+        return field.getName();
+    }
+    public static String getIdAttributeName(Class theClass) {
+        Field field = (Field)Arrays.stream(theClass.getDeclaredFields()).filter((x) -> {
+            return x.getName().matches("(?i).*id.*");
+        }).findFirst().orElse((Field) null);
+
+        assert field != null;
+
+        return field.getName();
+    }
 }
 

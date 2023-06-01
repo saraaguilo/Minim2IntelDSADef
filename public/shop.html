@@ -1,4 +1,4 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
@@ -15,6 +15,20 @@
         window.onunload=function(){null};
     </script>
     <script>
+        function buyItem(idItem) {
+            $.ajax({
+                type: 'PUT',
+                url: '/dsaApp/shop/buyItems/'+ idItem +'/'+ 2,
+                //data: { get_param: 'value'},
+                dataType: 'text',
+                success: function(){
+                    alert("Item bought!");
+                },
+                error: function(){
+                    alert("Item not bought!");
+                }
+            });
+        }
         function hidebutton(element) {
             element.style.display="none";
         }
@@ -22,7 +36,7 @@
             $("#shopButton").click(function(){
                 $.ajax({
                     type: 'GET',
-                    url: 'http://localhost:8080/dsaApp/game/shop',
+                    url: '/dsaApp/game/shop',
                     data: { get_param: 'value'},
                     dataType: 'text',
                     success: function(data){
@@ -38,7 +52,7 @@
                                 '<div><b>'+json[0].description+'</b></div><div><p>'+json[0].price+' coins</p></div>' +
                                 '</div>' +
                                 '<div class="flex-container">' +
-                                '<button type="button" class="btn btn-outline-info" onclick="buyGadget('+json[0].idGadget+')">BUY NOW</button>'+
+                                '<button type="button" class="btn btn-outline-info" onclick="buyItem('+json[0].idItem+')">BUY NOW</button>'+
                                 '</div>' +
                                 '</div>' +
                                 '</div>';
@@ -54,7 +68,7 @@
                                         '<div><b>'+json[i].description+'</b></div><div><p>'+json[i].price+' coins</p></div>' +
                                         '</div>'+
                                         '<div class="flex-container">' +
-                                        '<button type="button" class="btn btn-outline-info" onclick="buyGadget('+json[i].idGadget+')">BUY NOW</button>'+
+                                        '<button type="button" class="btn btn-outline-info" onclick="buyItem('+json[i].idItem+')">BUY NOW</button>'+
                                         '</div>' +
                                         '</div>' +
                                         '</div>';
@@ -66,7 +80,7 @@
                                         '<div><b>'+json[i].description+'</b></div><div><p>'+json[i].price+' coins</p></div>' +
                                         '</div>' +
                                         '<div class="flex-container">' +
-                                        '<button type="button" class="btn btn-outline-info" onclick="buyGadget('+json[i].idGadget+')">BUY NOW</button>'+
+                                        '<button type="button" class="btn btn-outline-info" onclick="buyItem('+json[i].idItem+')">BUY NOW</button>'+
                                         '</div>' +
                                         '</div>' +
                                         '</div>';

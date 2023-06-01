@@ -1,11 +1,11 @@
 package edu.upc.dsa.services;
 
 
+import edu.upc.dsa.CRUD.DAO.IItemDAO;
+import edu.upc.dsa.CRUD.DAO.IUserDAO;
 import edu.upc.dsa.GameManager;
 import edu.upc.dsa.GameManagerImpl;
-import edu.upc.dsa.exceptions.EmailAlreadyInUseException;
-import edu.upc.dsa.exceptions.IncorrectPasswordException;
-import edu.upc.dsa.exceptions.UserNotRegisteredException;
+import edu.upc.dsa.exceptions.*;
 import edu.upc.dsa.models.Credentials;
 import edu.upc.dsa.models.User;
 import edu.upc.dsa.models.Item;
@@ -14,10 +14,12 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import javax.naming.InsufficientResourcesException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.SQLException;
 import java.util.List;
 
 @Api(value = "/game", description = "Endpoint to Game Service")
@@ -25,6 +27,7 @@ import java.util.List;
 public class GameService {
 
     private GameManager manager;
+    private IUserDAO usermanager;
 
 
     public GameService() throws EmailAlreadyInUseException {
@@ -47,7 +50,7 @@ public class GameService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response register(User user) throws EmailAlreadyInUseException {
         try{
-            this.manager.register(new User(user.getName(), user.getSurname(), user.getEmail(), user.getPassword()));
+            this.manager.register(new User(user.getIdUser(),user.getName(), user.getSurname(), user.getEmail(), user.getPassword()));
             return Response.status(201).entity(user).build();
         } catch (EmailAlreadyInUseException e){
             e.printStackTrace();
@@ -76,8 +79,6 @@ public class GameService {
             return Response.status(401).build();
         }}
 
-
-
     @GET
     @ApiOperation(value = "View the items from the shop", notes = "View items")
     @ApiResponses(value = {
@@ -92,17 +93,29 @@ public class GameService {
         return Response.status(201).entity(entity).build()  ;
     }
     @PUT
-    @ApiOperation(value = "Buy the items from the shop", notes = "Buy items")
+    @ApiOperation(value = "Buy an item from the shop", notes = "Buy items")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = User.class),
-            @ApiResponse(code = 404, message = "Something went wrong"),
+            @ApiResponse(code = 201, message = "Successful"),
+            @ApiResponse(code = 409, message = "Wrong id"),
+            @ApiResponse(code = 401, message = "Item does not exist"),
+            @ApiResponse(code = 403, message = "Insufficient money")
     })
-    @Path("/buyItems")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response buyItems() {
+    @Path("/shop/buyItems/{idItem}/{idUser}")
+    public Response buyItems(@PathParam("idItem")String idItem,@PathParam("idUser") String idUser) {
 
-
-        return null;
+        try{
+            this.usermanager.buyItem(idItem,idUser);
+            return Response.status(201).build();
+        }
+        catch (InsufficientMoneyException e){
+            return Response.status(403).build();
+        }
+        catch (NonExistentItemException e) {
+            return Response.status(401).build();
+        }
+        catch (UserNotRegisteredException | SQLException e) {
+            return Response.status(409).build();
+        }
     }
 
 }

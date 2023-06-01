@@ -2,24 +2,23 @@ package edu.upc.dsa.CRUD.DAO;
 
 import edu.upc.dsa.CRUD.FactorySession;
 import edu.upc.dsa.CRUD.Session;
+import edu.upc.dsa.exceptions.NonExistentItemException;
 import edu.upc.dsa.models.Item;
+import org.apache.log4j.Logger;
+
+import java.sql.SQLException;
 import java.util.List;
 
 
 public class ItemDAOImpl implements IItemDAO {
-
-    public Item getItemByName(String name) {
+    final static Logger logger = Logger.getLogger(ItemDAOImpl.class);
+    public Item getItem(String idItem) throws NonExistentItemException {
         Session session = null;
         Item item = null;
         try {
             session = FactorySession.openSession();
-            item = (Item) session.get(Item.class, "name", name);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            // LOG
-        }
-        finally {
+            item = (Item) session.get(Item.class, "name", idItem);
+        } finally {
             session.close();
         }
 
