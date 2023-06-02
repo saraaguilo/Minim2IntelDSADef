@@ -34,7 +34,7 @@ public class User {
     public double getMoney() {return money;}
     public void setMoney(double money) {this.money = money;}
 
-    public void buyItem(Item item) throws InsufficientMoneyException {
+    public void purchaseItem(Item item) throws InsufficientMoneyException {
         if(item.getPrice()>this.money){
             throw new InsufficientMoneyException();
         }

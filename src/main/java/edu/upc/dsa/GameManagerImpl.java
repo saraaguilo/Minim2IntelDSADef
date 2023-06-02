@@ -97,6 +97,7 @@ public class GameManagerImpl implements GameManager {
     }
     public List<Item> Shop ()
     {
+        logger.info("Loading items...");
         IItemDAO itemDAO = new ItemDAOImpl();
         List<Item> daoItems = itemDAO.getItems();
         return daoItems;

@@ -12,21 +12,18 @@ public class Inventory {
     }
 
 
-    public String getItem()
+    public String getidItem()
     {
         return idItem;
     }
-    public String getUser()
+    public String getIdUser()
     {
         return idUser;
     }
-    /**public int getQuantity(){
-        return quantity;
-    }**/
-    public void setItem(String idItem){
+    public void setidItem(String idItem){
         this.idItem = idItem;
     }
-    public void setUser(String idUser)
+    public void setidUser(String idUser)
     {
         this.idUser = idUser;
     }

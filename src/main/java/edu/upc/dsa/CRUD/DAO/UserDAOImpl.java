@@ -11,14 +11,17 @@ import edu.upc.dsa.models.Item;
 import edu.upc.dsa.models.User;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.apache.log4j.Logger;
 
 public class UserDAOImpl implements IUserDAO {
     final static Logger logger = Logger.getLogger(UserDAOImpl.class);
-
+    private static UserDAOImpl instance;
+    public static UserDAOImpl getInstance() {
+        if (instance==null) instance = new UserDAOImpl();
+        return instance;
+    }
     public int addUser(String idUser, String name, String surname, String email, String password) {
         Session session = null;
         int employeeID = 0;
@@ -43,7 +46,7 @@ public class UserDAOImpl implements IUserDAO {
         User user = null;
         try {
             session = FactorySession.openSession();
-            user = (User)session.get(User.class, "id", userId);
+            user = (User)session.get(User.class, "idUser", userId);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -141,22 +144,21 @@ public class UserDAOImpl implements IUserDAO {
         return employeeList;
     }
     public void buyItem(String idItem, String idUser) throws InsufficientMoneyException, NonExistentItemException, UserNotRegisteredException, SQLException {
+
+        logger.info("Buying item "+ idItem);
         Session session = null;
         IItemDAO itemDAO = new ItemDAOImpl();
         Item item = itemDAO.getItem(idItem);
         User user = getUser(idUser);
-
         try {
             session = FactorySession.openSession();
-            user.buyItem(item);
+            user.purchaseItem(item);
+            logger.info("Item bought");
+            session.update(user);
         } catch (InsufficientMoneyException e) {
             logger.warn("Not enough money exception");
             throw new InsufficientMoneyException();
         } finally {
-            logger.info("Item bought");
-            session.update(user);
-            Inventory inventory= new Inventory(idUser,idItem);
-            session.save(inventory);
             session.close();
         }
     }

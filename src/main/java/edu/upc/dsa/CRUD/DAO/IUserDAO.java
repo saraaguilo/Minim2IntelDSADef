@@ -13,7 +13,7 @@ import java.util.List;
 public interface IUserDAO {
 
     public int addUser(String idUser,String name, String surname, String email, String password);
-    public User getUser(String userId);
+    public User getUser(String userId) throws UserNotRegisteredException;
     public void deleteEmployee(String employeeID);
     public List<Item> getItems();
     public List <User> getEmployeeByDept(int deptId);

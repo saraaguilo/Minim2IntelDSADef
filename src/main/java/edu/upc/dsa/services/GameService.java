@@ -3,6 +3,7 @@ package edu.upc.dsa.services;
 
 import edu.upc.dsa.CRUD.DAO.IItemDAO;
 import edu.upc.dsa.CRUD.DAO.IUserDAO;
+import edu.upc.dsa.CRUD.DAO.UserDAOImpl;
 import edu.upc.dsa.GameManager;
 import edu.upc.dsa.GameManagerImpl;
 import edu.upc.dsa.exceptions.*;
@@ -13,6 +14,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.apache.log4j.Logger;
 
 import javax.naming.InsufficientResourcesException;
 import javax.ws.rs.*;
@@ -25,19 +27,14 @@ import java.util.List;
 @Api(value = "/game", description = "Endpoint to Game Service")
 @Path("/game")
 public class GameService {
-
+    final static Logger logger = Logger.getLogger(GameService.class);
     private GameManager manager;
     private IUserDAO usermanager;
 
 
     public GameService() throws EmailAlreadyInUseException {
         this.manager = GameManagerImpl.getInstance();
-        //if (manager.getUsers().size()==0){
-            //manager.register(new User("Toni","Boté","toni@upc.edu","12345"));
-            //manager.register(new User("Jordi","Pié","jordi@upc.edu","123"));
-            //manager.register(new User("Anna","Sabater","anna@upc.edu","1234"));
-            //manager.register(new User("Sara","Aguiló","sara@upc.edu","123456"));
-        //}
+        this.usermanager = UserDAOImpl.getInstance();
     }
 
     @POST
@@ -100,9 +97,8 @@ public class GameService {
             @ApiResponse(code = 401, message = "Item does not exist"),
             @ApiResponse(code = 403, message = "Insufficient money")
     })
-    @Path("/shop/buyItems/{idItem}/{idUser}")
+    @Path("/buyItems/{idItem}/{idUser}")
     public Response buyItems(@PathParam("idItem")String idItem,@PathParam("idUser") String idUser) {
-
         try{
             this.usermanager.buyItem(idItem,idUser);
             return Response.status(201).build();
