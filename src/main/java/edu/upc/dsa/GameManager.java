@@ -3,6 +3,7 @@ package edu.upc.dsa;
 
 import edu.upc.dsa.exceptions.*;
 import edu.upc.dsa.models.Credentials;
+import edu.upc.dsa.models.Inventory;
 import edu.upc.dsa.models.Item;
 import edu.upc.dsa.models.User;
 
@@ -19,4 +20,5 @@ public interface GameManager {
     int ItemNumber();
     int LoggedNumber();
     List<Item> Shop();
+    List<Inventory> Inventory();
 }

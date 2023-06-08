@@ -1,8 +1,7 @@
 package edu.upc.dsa;
 
 
-import edu.upc.dsa.CRUD.DAO.IItemDAO;
-import edu.upc.dsa.CRUD.DAO.IUserDAO;
+import edu.upc.dsa.CRUD.DAO.*;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -10,14 +9,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-import edu.upc.dsa.CRUD.DAO.ItemDAOImpl;
-import edu.upc.dsa.CRUD.DAO.UserDAOImpl;
 import edu.upc.dsa.CRUD.Session;
 import edu.upc.dsa.exceptions.*;
 import edu.upc.dsa.models.Credentials;
 import edu.upc.dsa.models.Inventory;
 import edu.upc.dsa.models.Item;
 import edu.upc.dsa.models.User;
+import io.swagger.models.auth.In;
 import org.apache.log4j.Logger;
 
 public class GameManagerImpl implements GameManager {
@@ -102,6 +100,14 @@ public class GameManagerImpl implements GameManager {
         List<Item> daoItems = itemDAO.getItems();
         return daoItems;
     }
+    public List<Inventory> Inventory ()
+    {
+        logger.info("Loading inventory...");
+        IInventoryDAO inventoryDAO = new InventoryDAOImpl();
+        List<Inventory> daoInventory = inventoryDAO.getInventoryitems();
+        return daoInventory;
+    }
+
     @Override
     public int UserNumber() {
         return this.users.size();

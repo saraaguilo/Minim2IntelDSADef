@@ -1,13 +1,12 @@
 package edu.upc.dsa.services;
 
 
-import edu.upc.dsa.CRUD.DAO.IItemDAO;
-import edu.upc.dsa.CRUD.DAO.IUserDAO;
-import edu.upc.dsa.CRUD.DAO.UserDAOImpl;
+import edu.upc.dsa.CRUD.DAO.*;
 import edu.upc.dsa.GameManager;
 import edu.upc.dsa.GameManagerImpl;
 import edu.upc.dsa.exceptions.*;
 import edu.upc.dsa.models.Credentials;
+import edu.upc.dsa.models.Inventory;
 import edu.upc.dsa.models.User;
 import edu.upc.dsa.models.Item;
 import io.swagger.annotations.Api;
@@ -30,11 +29,13 @@ public class GameService {
     final static Logger logger = Logger.getLogger(GameService.class);
     private GameManager manager;
     private IUserDAO usermanager;
+    private IInventoryDAO inventorymanager;
 
 
     public GameService() throws EmailAlreadyInUseException {
         this.manager = GameManagerImpl.getInstance();
         this.usermanager = UserDAOImpl.getInstance();
+        this.inventorymanager = InventoryDAOImpl.getInstance();
     }
 
     @POST
@@ -97,10 +98,10 @@ public class GameService {
             @ApiResponse(code = 401, message = "Item does not exist"),
             @ApiResponse(code = 403, message = "Insufficient money")
     })
-    @Path("/buyItems/{idItem}/{idUser}")
-    public Response buyItems(@PathParam("idItem")String idItem,@PathParam("idUser") String idUser) {
+    @Path("/buyItems/{idItem}/{name}/{idUser}")
+    public Response buyItems(@PathParam("idItem")String idItem,@PathParam("name") String name,@PathParam("idUser") String idUser) {
         try{
-            this.usermanager.buyItem(idItem,idUser);
+            this.usermanager.buyItem(idItem,name,idUser);
             return Response.status(201).build();
         }
         catch (InsufficientMoneyException e){
@@ -112,6 +113,24 @@ public class GameService {
         catch (SQLException e) {
             return Response.status(409).build();
         }
+    }
+    @GET
+    @ApiOperation(value = "View items in the user's Inventory", notes = "View Inventory")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful"),
+            @ApiResponse(code = 401, message = "User has an empty inventory"),
+    })
+    @Path("/inventory/{idUser}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getInventory(@PathParam("idUser") String idUser) {
+
+      try{
+          this.inventorymanager.getInventory(idUser);
+          return Response.status(201).build();
+      }catch (SQLException e){
+          return Response.status(401).build();
+      }
+
     }
 
 }

@@ -143,7 +143,7 @@ public class UserDAOImpl implements IUserDAO {
         }
         return employeeList;
     }
-    public void buyItem(String idItem, String idUser) throws InsufficientMoneyException, NonExistentItemException,  SQLException {
+    public void buyItem(String idItem, String name, String idUser) throws InsufficientMoneyException, NonExistentItemException,  SQLException {
 
         logger.info("Buying item "+ idItem + " for User " +idUser);
         Session session = null;
@@ -156,9 +156,9 @@ public class UserDAOImpl implements IUserDAO {
             user.purchaseItem(item);
             logger.info("Item purchased");
             session.update(user);
-            Inventory inventory = new Inventory(idItem, idUser);
+            Inventory inventory = new Inventory(idItem, name, idUser);
             session.save(inventory);
-            logger.info("Purchase saved, item: " + inventory.getIdItem());
+            logger.info("Purchase saved, item: " + inventory.getName());
 
         } catch (InsufficientMoneyException e) {
             logger.warn("Not enough money exception");

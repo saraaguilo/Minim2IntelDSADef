@@ -17,6 +17,6 @@ public interface IUserDAO {
     public void deleteEmployee(String employeeID);
     public List<Item> getItems();
     public List <User> getEmployeeByDept(int deptId);
-    public void buyItem(String idItem, String idUser) throws InsufficientMoneyException, NonExistentItemException, SQLException;
+    public void buyItem(String idItem, String name, String idUser) throws InsufficientMoneyException, NonExistentItemException, SQLException;
     User getUserByEmail(String email);
 }
