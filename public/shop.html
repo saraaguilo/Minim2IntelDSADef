@@ -144,6 +144,29 @@
 
                 });
             });
+            $("#updateButton").click(function () {
+                var name=$("#name").val();
+                var surname=$("#surname").val();
+                var email=$("#email").val();
+                var password=$("#password").val();
+                $.ajax({
+                    //contentType:'application/json',
+                    type: 'POST',
+                    url: "dsaApp/game/update",
+                    data: JSON.stringify({"name":name,"surname":surname,"email": email , "password": password}),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'text',
+
+                    success: function (data) {
+                        alert("Credentials updated!");
+                        location.reload();
+                    },
+                    error: function (json) {
+                        alert(" Wrong credentials");
+                        location.reload();
+                    }
+                })
+            });
         });
     </script>
 </head>
@@ -155,6 +178,32 @@
 <div class="container" style="margin: auto; width: 90%">
     <div id="gadgetsCards" class="center" style="text-align: center"></div>
     <div id="inventoryCards" class="center" style="text-align: center"></div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Name" id="name" name="name" required>
+        <div class="input-group-append">
+        </div>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Surname" id="surname" name="surname" required>
+        <div class="input-group-append">
+        </div>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Email" id="email" name="email" required>
+        <div class="input-group-append">
+            <span class="input-group-text">@example.com</span>
+        </div>
+    </div>
+    <div class="input-group mb-3">
+        <input type="password" class="form-control" placeholder="Password" id="password" name="password" required>
+        <div class="input-group-append">
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block" id = "updateButton"> Update</button>
+        <div class="signup_link" style="text-align:center">
+        </div>
+    </div>
     <div class="form-group">
         <button onclick="hidebutton(this)" type="button" class="btn btn-primary btn-block" id="shopButton">Shop</button>
         <div class="signup_link" style="text-align:center"></div>

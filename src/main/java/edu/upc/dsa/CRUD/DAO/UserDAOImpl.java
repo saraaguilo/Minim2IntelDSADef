@@ -8,6 +8,7 @@ import edu.upc.dsa.exceptions.NonExistentItemException;
 import edu.upc.dsa.exceptions.UserNotRegisteredException;
 import edu.upc.dsa.models.Inventory;
 import edu.upc.dsa.models.Item;
+import edu.upc.dsa.models.UpdateInfo;
 import edu.upc.dsa.models.User;
 
 import java.sql.SQLException;
@@ -169,6 +170,19 @@ public class UserDAOImpl implements IUserDAO {
         }
         finally {
 
+            session.close();
+        }
+    }
+    public void updateUser(UpdateInfo info) throws SQLException {
+        Session session = null;
+        User user;
+        try{
+            session = FactorySession.openSession();
+            user = (User) session.get(User.class, "idUser", (info.getIdUser()));
+            session.update(user);
+        }catch (SQLException e){
+            throw new SQLException();
+        } finally {
             session.close();
         }
     }

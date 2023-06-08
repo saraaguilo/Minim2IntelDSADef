@@ -5,10 +5,7 @@ import edu.upc.dsa.CRUD.DAO.*;
 import edu.upc.dsa.GameManager;
 import edu.upc.dsa.GameManagerImpl;
 import edu.upc.dsa.exceptions.*;
-import edu.upc.dsa.models.Credentials;
-import edu.upc.dsa.models.Inventory;
-import edu.upc.dsa.models.User;
-import edu.upc.dsa.models.Item;
+import edu.upc.dsa.models.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -131,6 +128,24 @@ public class GameService {
           return Response.status(401).build();
       }
 
+    }
+    @PUT
+    @ApiOperation(value = "update a User", notes = "Updating a User")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful"),
+            @ApiResponse(code = 401, message = "User does not exist")
+    })
+    @Path("/update/{idUser}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateUser(UpdateInfo info) {
+        try{
+            this.usermanager.updateUser(info);
+            return Response.status(201).build();
+        }
+        catch (SQLException e) {
+            return Response.status(401).build();
+        }
     }
 
 }
