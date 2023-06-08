@@ -17,8 +17,9 @@ public class ItemDAOImpl implements IItemDAO {
         Item item = null;
         try {
             session = FactorySession.openSession();
-            item = (Item) session.get(Item.class, "name", idItem);
+            item = (Item) session.get(Item.class, "idItem", idItem);
         } finally {
+            //session.save(item);
             session.close();
         }
 

@@ -4,16 +4,16 @@ public class Item {
     String idItem;
     String name;
     String description;
-    double price;
+    int price;
     String image;
 
-    public Item() {};
+    public Item() {}
 
-    public Item(String idItem,String name, String description, double price, String image){
+    public Item(String idItem,String name, String description, int price, String image){
         this.idItem = idItem;
         this.name = name;
         this.description = description;
-        this.price = price;
+        this.setPrice(price);
         this.image = image;
     }
 
@@ -27,8 +27,8 @@ public class Item {
     public void setName(String name){this.name = name;}
     public String getDescription(){return description;}
     public void setDescription(String description){this.description=description;}
-    public double getPrice(){return price;}
-    public void setPrice(double price){this.price = price;}
+    public int getPrice(){return price;}
+    public void setPrice(int price){this.price = price;}
     public String getImage() {
         return image;
     }

@@ -93,7 +93,7 @@ public class GameService {
     @ApiOperation(value = "Buy an item from the shop", notes = "Buy items")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful"),
-            @ApiResponse(code = 409, message = "Wrong id"),
+            @ApiResponse(code = 409, message = "Item already purchased"),
             @ApiResponse(code = 401, message = "Item does not exist"),
             @ApiResponse(code = 403, message = "Insufficient money")
     })
@@ -109,7 +109,7 @@ public class GameService {
         catch (NonExistentItemException e) {
             return Response.status(401).build();
         }
-        catch (UserNotRegisteredException | SQLException e) {
+        catch (SQLException e) {
             return Response.status(409).build();
         }
     }

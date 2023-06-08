@@ -1,18 +1,17 @@
 package edu.upc.dsa.models;
 
 public class Inventory {
+    //String idPurchase;
     public String idItem;
     public String idUser;
-    //public int quantity;
     public Inventory() {}
-    public Inventory(String idUser, String idItem)
+    public Inventory(String idItem, String idUser)
     {
         this.idItem = idItem;
         this.idUser = idUser;
     }
 
-
-    public String getidItem()
+    public String getIdItem()
     {
         return idItem;
     }

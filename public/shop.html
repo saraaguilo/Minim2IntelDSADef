@@ -19,7 +19,7 @@
             $.ajax({
                 type: 'PUT',
                 url: '/dsaApp/game/buyItems/'+ idItem +'/'+ 2,
-                //data: { get_param: 'value'},
+                data: { get_param: 'value'},
                 dataType: 'text',
                 success: function(){
                     alert("Item bought!");
@@ -47,12 +47,12 @@
                             htmlLine='<div class="row">' +
                                 '<div class="column">' +
                                 '<div class="card">' +
-                                '<img src="'+json[0].image+'" style="width:100%">'+
+                                '<img src="'+json[0].image+'" width="200" height="200">'+
                                 '<div class="flex-container">' +
                                 '<div><b>'+json[0].description+'</b></div><div><p>'+json[0].price+' coins</p></div>' +
                                 '</div>' +
                                 '<div class="flex-container">' +
-                                '<button type="button" class="btn btn-outline-info" onclick="buyItem('+json[0].idItem+')">BUY NOW</button>'+
+                                '<button type="button" class="btn btn-outline-info" onclick="buyItem('+json[0].idItem+')">BUY</button>'+
                                 '</div>' +
                                 '</div>' +
                                 '</div>';
@@ -63,24 +63,24 @@
                                         '<div class="row">' +
                                         '<div class="column">' +
                                         '<div class="card">' +
-                                        '<img src="'+json[i].image+'" style="width:100%">'+
+                                        '<img src="'+json[i].image+'" width="200" height="200">'+
                                         '<div class="flex-container">' +
                                         '<div><b>'+json[i].description+'</b></div><div><p>'+json[i].price+' coins</p></div>' +
                                         '</div>'+
                                         '<div class="flex-container">' +
-                                        '<button type="button" class="btn btn-outline-info" onclick="buyItem('+json[i].idItem+')">BUY NOW</button>'+
+                                        '<button type="button" class="btn btn-outline-info" onclick="buyItem('+json[i].idItem+')">BUY</button>'+
                                         '</div>' +
                                         '</div>' +
                                         '</div>';
                                 } else {
                                     htmlLine += '<div class="column">' +
                                         '<div class="card">' +
-                                        '<img src="'+json[i].image+'" style="width:100%">' +
+                                        '<img src="'+json[i].image+'" width="200" height="200">' +
                                         '<div class="flex-container">' +
                                         '<div><b>'+json[i].description+'</b></div><div><p>'+json[i].price+' coins</p></div>' +
                                         '</div>' +
                                         '<div class="flex-container">' +
-                                        '<button type="button" class="btn btn-outline-info" onclick="buyItem('+json[i].idItem+')">BUY NOW</button>'+
+                                        '<button type="button" class="btn btn-outline-info" onclick="buyItem('+json[i].idItem+')">BUY</button>'+
                                         '</div>' +
                                         '</div>' +
                                         '</div>';

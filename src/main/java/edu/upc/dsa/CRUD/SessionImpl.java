@@ -20,7 +20,7 @@ public class SessionImpl implements Session {
         this.conn = conn;
     }
 
-    public void save(Object entity) {
+    public void save(Object entity) throws SQLException {
 
         String insertQuery = QueryHelper.createQueryINSERT(entity);
 
@@ -29,7 +29,7 @@ public class SessionImpl implements Session {
         try {
             pstm = conn.prepareStatement(insertQuery);
             pstm.setObject(1, 0);
-            int i = 2;
+            int i = 1;
 
             for (String field: ObjectHelper.getFields(entity)) {
                 pstm.setObject(i++, ObjectHelper.getter(entity, field));

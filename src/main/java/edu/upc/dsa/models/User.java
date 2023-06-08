@@ -9,9 +9,8 @@ public class User {
     String surname;
     String email;
     String password;
-    double money;
-
-    public User() {};
+    int money;
+    public User() {}
     public User(String idUser, String name, String surname, String email, String password){
         this();
         this.idUser = RandomUtils.getId();
@@ -19,7 +18,7 @@ public class User {
         this.surname = surname;
         this.email = email;
         this.password = password;
-        this.setMoney(200);
+        this.money=200;
     }
     public String getIdUser(){return idUser;}
     public void setIdUser(String idUser){this.idUser = idUser;}
@@ -32,7 +31,7 @@ public class User {
     public String getPassword(){return password;}
     public void setPassword(String password){this.password = password;}
     public double getMoney() {return money;}
-    public void setMoney(double money) {this.money = money;}
+    public void setMoney(int money) {this.money = money;}
 
     public void purchaseItem(Item item) throws InsufficientMoneyException {
         if(item.getPrice()>this.money){

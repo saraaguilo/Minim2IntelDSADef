@@ -8,24 +8,26 @@ public class QueryHelper {
     public static String createQueryINSERT(Object entity) {
 
         StringBuffer sb = new StringBuffer("INSERT INTO ");
-        sb.append(entity.getClass().getSimpleName()).append(" ");
-        sb.append("(");
+        sb.append(entity.getClass().getSimpleName()).append(" (");
 
         String [] fields = ObjectHelper.getFields(entity);
+        int var = fields.length;
+        int var1;
+        String [] var2 = fields;
 
-        sb.append("id");
-        for (String field: fields) {
-            sb.append(", ").append(field);
+        for (var1 = 0; var1 < var; var1++) {
+            String field = var2[var1];
+            sb.append(field).append(", ");
         }
+        sb.delete(sb.length()-2,sb.length());
+        sb.append(") VALUES (");
 
-        sb.append(") VALUES (?");
-
-        for (String field: fields) {
-            sb.append(", ?");
+        for(var1 = 0; var1 < var; var1++) {
+            String var25 = var2[var1];
+            sb.append("?, ");
         }
-
+        sb.delete(sb.length()-2,sb.length());
         sb.append(")");
-
         return sb.toString();
     }
 
