@@ -179,11 +179,19 @@ public class UserDAOImpl implements IUserDAO {
         try{
             session = FactorySession.openSession();
             user = (User) session.get(User.class, "idUser", (info.getIdUser()));
-            session.update(user);
+            session.update(updateInfo(user,info));
         }catch (SQLException e){
             throw new SQLException();
         } finally {
             session.close();
         }
     }
+    private User updateInfo(User user, UpdateInfo info) {
+        user.setName(info.getName());
+        user.setSurname(info.getSurname());
+        user.setEmail(info.getEmail());
+        user.setPassword(info.getPassword());
+        return user;
+    }
+
 }

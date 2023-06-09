@@ -8,7 +8,7 @@ public class UpdateInfo {
     String password;
     public UpdateInfo(){}
 
-    public UpdateInfo(String idUser, String username, String surname, String birthday, String email, String password) {
+    public UpdateInfo(String idUser, String name, String surname, String email, String password) {
         this.idUser = idUser;
         this.name = name;
         this.surname = surname;

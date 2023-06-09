@@ -135,7 +135,7 @@ public class GameService {
             @ApiResponse(code = 201, message = "Successful"),
             @ApiResponse(code = 401, message = "User does not exist")
     })
-    @Path("/update/{idUser}")
+    @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(UpdateInfo info) {
