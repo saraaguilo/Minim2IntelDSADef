@@ -70,7 +70,7 @@ public class GameManagerImpl implements GameManager {
         }
     }
     @Override
-    public User login(Credentials credentials) throws UserNotRegisteredException, IncorrectPasswordException {
+    public String login(Credentials credentials) throws UserNotRegisteredException, IncorrectPasswordException {
         try {
             IUserDAO userDAO = new UserDAOImpl();
             HashMap<String, String> credentialsHash = new HashMap<>();
@@ -81,7 +81,7 @@ public class GameManagerImpl implements GameManager {
             logger.info(user1.getPassword());
             if (user1.getPassword().equals(credentials.getPassword())) {
                 logger.info("Succesful login " + credentials.getEmail());
-                return user1;
+                return user1.getIdUser();
             } else if (user1.getEmail() == null) {
                 logger.info("User not registered");
                 throw new UserNotRegisteredException();

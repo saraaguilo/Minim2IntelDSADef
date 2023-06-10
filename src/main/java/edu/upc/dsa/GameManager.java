@@ -14,7 +14,7 @@ public interface GameManager {
     int size();
     User register(User user) throws EmailAlreadyInUseException;
     //User login(String email, String password) throws UserNotRegisteredException, IncorrectPasswordException;
-    User login(Credentials credentials) throws UserNotRegisteredException, IncorrectPasswordException;
+    String login(Credentials credentials) throws UserNotRegisteredException, IncorrectPasswordException;
     List<User> getUsers();
     int UserNumber();
     int ItemNumber();

@@ -57,7 +57,7 @@ public class GameService {
     @POST
     @ApiOperation(value = "User login", notes = "Authenticate an existing user")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "User successfully authenticated", response = User.class),
+            @ApiResponse(code = 201, message = "User successfully authenticated", response = idUser.class),
             @ApiResponse(code = 404, message = "User not found"),
             @ApiResponse(code = 401, message = "Incorrect password"),
     })
@@ -66,8 +66,9 @@ public class GameService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(Credentials credentials) throws UserNotRegisteredException, IncorrectPasswordException {
         try {
-            User user = this.manager.login(credentials);
-            return Response.status(201).entity(user).build();
+            String id = this.manager.login(credentials);
+            idUser idUser = new idUser(id);
+            return Response.status(201).entity(idUser).build();
         } catch (UserNotRegisteredException e) {
             return Response.status(404).build();
         } catch (IncorrectPasswordException e) {
