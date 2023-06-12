@@ -13,7 +13,7 @@ public interface Session<E> {
     Object get(Class theClass, String pk, Object value);
     void delete(Object object);
     List<Object> findAll(Class theClass);
-    List<Object> findAll(Class theClass, HashMap<String,String> params);
+    List<Object> findAll(Class theClass, HashMap<String,String> params) throws SQLException;
     List<Object> query(String query, Class theClass, HashMap params);
     List<Object> getList(Class theClass, String key, Object value);
     void update(Object object) throws SQLException;

@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.models.auth.In;
 import org.apache.log4j.Logger;
 
 import javax.naming.InsufficientResourcesException;
@@ -117,17 +118,23 @@ public class GameService {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful"),
             @ApiResponse(code = 401, message = "User has an empty inventory"),
+            @ApiResponse(code = 500, message = "SQL Exception")
     })
     @Path("/inventory/{idUser}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getInventory(@PathParam("idUser") String idUser) {
 
-      try{
-          this.inventorymanager.getInventory(idUser);
-          return Response.status(201).build();
-      }catch (SQLException e){
-          return Response.status(401).build();
-      }
+        try {
+            List<Inventory> inventory = this.inventorymanager.getInventory(idUser);
+            GenericEntity<List<Inventory>> entity = new GenericEntity<List<Inventory>>(inventory) {};
+            return Response.status(201).entity(entity).build();
+        } catch (SQLException e) {
+            return Response.status(500).build();
+        } catch (NotInInventoryException e) {
+            return Response.status(401).build();
+        } catch (NonExistentItemException e) {
+            throw new RuntimeException(e);
+        }
 
     }
     @PUT
