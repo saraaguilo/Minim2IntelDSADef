@@ -45,11 +45,9 @@ public class InventoryDAOImpl implements IInventoryDAO {
             }
             throw new NotInInventoryException();
         }catch (Exception e){
-        }
-        finally {
+        } finally {
             session.close();
         }
-
         return userItems;
     }
 

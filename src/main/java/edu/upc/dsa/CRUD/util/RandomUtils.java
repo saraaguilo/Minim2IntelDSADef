@@ -1,4 +1,4 @@
-package edu.upc.dsa.util;
+package edu.upc.dsa.CRUD.util;
 
 import net.moznion.random.string.RandomStringGenerator;
 

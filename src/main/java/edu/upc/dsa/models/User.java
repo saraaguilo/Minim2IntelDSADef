@@ -1,7 +1,7 @@
 package edu.upc.dsa.models;
 
 import edu.upc.dsa.exceptions.InsufficientMoneyException;
-import edu.upc.dsa.util.RandomUtils;
+import edu.upc.dsa.CRUD.util.RandomUtils;
 
 public class User {
     String idUser;

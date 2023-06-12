@@ -4,6 +4,7 @@ package edu.upc.dsa;
 import edu.upc.dsa.CRUD.DAO.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,10 +12,7 @@ import java.util.List;
 
 import edu.upc.dsa.CRUD.Session;
 import edu.upc.dsa.exceptions.*;
-import edu.upc.dsa.models.Credentials;
-import edu.upc.dsa.models.Inventory;
-import edu.upc.dsa.models.Item;
-import edu.upc.dsa.models.User;
+import edu.upc.dsa.models.*;
 import io.swagger.models.auth.In;
 import org.apache.log4j.Logger;
 
@@ -26,6 +24,7 @@ public class GameManagerImpl implements GameManager {
     protected List<Item> items;
     protected List<User> logged;
     private HashMap<String, User> UsersMap;
+    protected List<FAQ> faqs;
     public List<User> getUsers(){
         return users;
     }
@@ -36,6 +35,7 @@ public class GameManagerImpl implements GameManager {
         this.items = new LinkedList<>();
         usersMap = new HashMap<>();
         UsersMap = new HashMap<String, User>();
+        this.faqs = new ArrayList<>();
     }
     public static GameManager getInstance() {
         if (instance==null) instance = new GameManagerImpl();
@@ -107,7 +107,18 @@ public class GameManagerImpl implements GameManager {
         List<Inventory> daoInventory = inventoryDAO.getInventoryitems();
         return daoInventory;
     }
-
+    public List<FAQ> getFAQs(){
+        List<FAQ> faqs = this.faqs;
+        return faqs;
+    }
+    public FAQ addFAQ(FAQ faq){
+        logger.info("Adding FAQs...");
+        this.faqs.add(faq);
+        return faq;
+    }
+    public int FAQsNumber(){
+        return this.faqs.size();
+    }
     @Override
     public int UserNumber() {
         return this.users.size();

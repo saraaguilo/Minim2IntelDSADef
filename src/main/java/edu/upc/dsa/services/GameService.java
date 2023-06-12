@@ -34,6 +34,10 @@ public class GameService {
         this.manager = GameManagerImpl.getInstance();
         this.usermanager = UserDAOImpl.getInstance();
         this.inventorymanager = InventoryDAOImpl.getInstance();
+        if(manager.FAQsNumber() == 0){
+            this.manager.addFAQ(new FAQ("Can I update my credentials?","Of course, in the UPDATE section of the menu."));
+            this.manager.addFAQ(new FAQ("How much money do I get?","After registering, each user receives 200 coins."));
+        }
     }
 
     @POST
@@ -155,5 +159,16 @@ public class GameService {
             return Response.status(401).build();
         }
     }
-
+    @GET
+    @ApiOperation(value = "Obtain the FAQs", notes = "View FAQs")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response = FAQ.class, responseContainer="List"),
+    })
+    @Path("/faqs")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFAQs() {
+        List<FAQ> faqs = this.manager.getFAQs();
+        GenericEntity<List<FAQ>> entity = new GenericEntity<List<FAQ>>(faqs){};
+        return Response.status(201).entity(entity).build()  ;
+    }
 }

@@ -108,33 +108,19 @@
                         if(json.length>0) {
                             htmlLine='<div class="row">' +
                                 '<div class="column">' +
-                                '<div class="card">' +
                                 '<div class="flex-container">' +
-                                '<div><b>'+json[0].idItem+'</b></div>' +
-                                '</div>' +
+                                '<div><b>'+json[0].name+'</b></div>' +
                                 '</div>' +
                                 '</div>';
 
                             for (i = 1; i < json.length; i++) {
-                                if (i % 3 == 0) {
-                                    htmlLine+='</div>' +
-                                        '<div class="row">' +
-                                        '<div class="column">' +
-                                        '<div class="card">' +
-                                        '<div class="flex-container">' +
-                                        '<div><b>'+json[i].idItem+'</b></div>' +
-                                        '</div>'+
-                                        '</div>'+
-                                        '</div>';
-                                } else {
-                                    htmlLine += '<div class="column">' +
-                                        '<div class="card">' +
-                                        '<div class="flex-container">' +
-                                        '<div><b>'+json[i].idItem+'</b></div>' +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</div>';
-                                }
+                                htmlLine+='</div>' +
+                                    '<div class="row">' +
+                                    '<div class="column">' +
+                                    '<div class="flex-container">' +
+                                    '<div><b>'+json[i].name+'</b></div>' +
+                                    '</div>'+
+                                    '</div>';
                             }
                             htmlLine = htmlLine+'</div>'
                             $('#inventoryCards').append(htmlLine);
@@ -167,7 +153,7 @@
         <div class="signup_link" style="text-align:center"></div>
     </div>
     <div class="form-group">
-        <button type="button" class="btn btn-primary btn-block" id="inventoryButton">Inventory</button>
+        <button onclick="hidebutton(this)" type="button" class="btn btn-primary btn-block" id="inventoryButton">Inventory</button>
         <div class="signup_link" style="text-align:center"></div>
     </div>
     <div class="form-group">

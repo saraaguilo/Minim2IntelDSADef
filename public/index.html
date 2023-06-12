@@ -41,6 +41,9 @@
                     }
                 })
             });
+            $("#FAQsButton").click(function () {
+                $(location).attr('href', "faqs.html");
+            });
         });
     </script>
 </head>
@@ -61,6 +64,9 @@
             <div class="input-group-append">
             </div>
         </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block" id = "FAQsButton"> FAQs</button>
+    </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary btn-block" id = "loginButton"> Login</button>
         <div class="signup_link" style="text-align:center">

@@ -2,10 +2,7 @@
 package edu.upc.dsa;
 
 import edu.upc.dsa.exceptions.*;
-import edu.upc.dsa.models.Credentials;
-import edu.upc.dsa.models.Inventory;
-import edu.upc.dsa.models.Item;
-import edu.upc.dsa.models.User;
+import edu.upc.dsa.models.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -19,6 +16,10 @@ public interface GameManager {
     int UserNumber();
     int ItemNumber();
     int LoggedNumber();
+    int FAQsNumber();
     List<Item> Shop();
     List<Inventory> Inventory();
+    List<FAQ> getFAQs();
+    FAQ addFAQ(FAQ faq);
+
 }
