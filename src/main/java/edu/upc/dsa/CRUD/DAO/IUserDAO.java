@@ -5,6 +5,7 @@ import edu.upc.dsa.exceptions.InsufficientMoneyException;
 import edu.upc.dsa.exceptions.NonExistentItemException;
 import edu.upc.dsa.exceptions.UserNotRegisteredException;
 import edu.upc.dsa.models.Item;
+import edu.upc.dsa.models.Report;
 import edu.upc.dsa.models.UpdateInfo;
 import edu.upc.dsa.models.User;
 
@@ -21,4 +22,6 @@ public interface IUserDAO {
     public void buyItem(String idItem, String name, String idUser) throws InsufficientMoneyException, NonExistentItemException, SQLException;
     User getUserByEmail(String email);
     void updateUser(UpdateInfo info) throws SQLException;
+    void addReport(Report report) throws SQLException;
+    List<Report> getReports() throws SQLException;
 }

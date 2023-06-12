@@ -132,6 +132,9 @@
             $("#updateButton").click(function () {
                 $(location).attr('href', "update.html");
             });
+            $("#reportButton").click(function () {
+                $(location).attr('href', "report.html");
+            });
         });
     </script>
 </head>
@@ -154,6 +157,10 @@
     </div>
     <div class="form-group">
         <button onclick="hidebutton(this)" type="button" class="btn btn-primary btn-block" id="inventoryButton">Inventory</button>
+        <div class="signup_link" style="text-align:center"></div>
+    </div>
+    <div class="form-group">
+        <button onclick="hidebutton(this)" type="button" class="btn btn-primary btn-block" id="reportButton">Report an abuse</button>
         <div class="signup_link" style="text-align:center"></div>
     </div>
     <div class="form-group">

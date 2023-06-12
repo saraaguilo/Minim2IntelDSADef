@@ -171,4 +171,22 @@ public class GameService {
         GenericEntity<List<FAQ>> entity = new GenericEntity<List<FAQ>>(faqs){};
         return Response.status(201).entity(entity).build()  ;
     }
+    @POST
+    @ApiOperation(value = "Report an abuse", notes = "Add a new abuse report")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful"),
+            @ApiResponse(code = 401, message = "Error")
+
+    })
+    @Path("/report/add")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addReport(Report report) {
+        try{
+            this.usermanager.addReport(report);
+            return Response.status(201).build();
+        } catch (SQLException e){
+            return Response.status(401).build();
+        }
+    }
 }

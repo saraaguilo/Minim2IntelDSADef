@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report an abuse</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#reportButton1").click(function () {
+                let date=$("#date").val();
+                let informer=$("#informer").val();
+                let message=$("#message").val();
+                $.ajax({
+                    //contentType:'application/json',
+                    type: 'POST',
+                    url: "dsaApp/game/report/add",
+                    data: JSON.stringify({"date":date,"informer":informer,"message":message}),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'text',
+
+                    success: function (data) {
+                        alert("Report sent!");
+                        $(location).attr('href', "shop.html");
+                    },
+                    error: function (json) {
+                        alert("Something went wrong");
+                        location.reload();
+                    }
+                })
+            });
+            $("#returnButton").click(function () {
+                $(location).attr('href', "shop.html");
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container mt-3"style="text-align:center" >
+    <h3>Report an abuse</h3>
+    <p>Fill out this form in order to report an abuse!</p>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Date" id="date" name="date" required>
+        <div class="input-group-append">
+        </div>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Name" id="informer" name="informer" required>
+        <div class="input-group-append">
+        </div>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="What do you wish to report?" id="message" name="message" required>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block" id = "reportButton1"> Report</button>
+        <div class="signup_link" style="text-align:center">
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block" id = "returnButton"> Return</button>
+        <div class="signup_link" style="text-align:center">
+        </div>
+    </div>
+    </form>
+</div>
+</body>
+</html>

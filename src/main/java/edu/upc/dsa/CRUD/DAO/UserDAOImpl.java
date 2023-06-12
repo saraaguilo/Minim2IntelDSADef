@@ -6,17 +6,16 @@ import edu.upc.dsa.CRUD.Session;
 import edu.upc.dsa.exceptions.InsufficientMoneyException;
 import edu.upc.dsa.exceptions.NonExistentItemException;
 import edu.upc.dsa.exceptions.UserNotRegisteredException;
-import edu.upc.dsa.models.Inventory;
-import edu.upc.dsa.models.Item;
-import edu.upc.dsa.models.UpdateInfo;
-import edu.upc.dsa.models.User;
+import edu.upc.dsa.models.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.apache.log4j.Logger;
 
 public class UserDAOImpl implements IUserDAO {
+    protected List<Report> reports;
     final static Logger logger = Logger.getLogger(UserDAOImpl.class);
     private static UserDAOImpl instance;
     public static UserDAOImpl getInstance() {
@@ -192,6 +191,37 @@ public class UserDAOImpl implements IUserDAO {
         user.setEmail(info.getEmail());
         user.setPassword(info.getPassword());
         return user;
+    }
+    public void addReport(Report report) throws SQLException {
+        Session session = null;
+        try {
+            session = FactorySession.openSession();
+            String date = report.getDate();
+            String informer = report.getInformer();
+            String message = report.getMessage();
+            logger.info("Sending report...");
+            logger.info("Report = Date: "+date+", Informer: "+informer+", Message: "+message+".");
+            session.save(report);
+            reports.add(report);
+            //return report;
+        } catch(SQLException e){
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+    public List<Report> getReports() throws SQLException{
+        Session session = null;
+        try {
+            session = FactorySession.openSession();
+            List<Report> reportList = new ArrayList<Report>();
+            reportList = session.findAll(Report.class);
+            return reportList;
+        } catch (Exception e){
+            throw new SQLException();
+        }finally {
+            session.close();
+        }
     }
 
 }
