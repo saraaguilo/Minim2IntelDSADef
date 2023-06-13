@@ -2,9 +2,7 @@ package edu.upc.dsa.models;
 
 public class idUser {
     String idUser;
-
     public idUser(){};
-
     public idUser(String idUser) {
         this.setIdUser(idUser);
     }

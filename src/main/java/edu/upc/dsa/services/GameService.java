@@ -34,9 +34,9 @@ public class GameService {
         this.manager = GameManagerImpl.getInstance();
         this.usermanager = UserDAOImpl.getInstance();
         this.inventorymanager = InventoryDAOImpl.getInstance();
-        if(manager.FAQsNumber() == 0){
-            this.manager.addFAQ(new FAQ("Can I update my credentials?","Of course, in the UPDATE section of the menu."));
-            this.manager.addFAQ(new FAQ("How much money do I get?","After registering, each user receives 200 coins."));
+        if (manager.FAQsNumber() == 0) {
+            this.manager.addFAQ(new FAQ("Can I update my credentials?", "Of course, in the UPDATE section of the menu."));
+            this.manager.addFAQ(new FAQ("How much money do I get?", "After registering, each user receives 200 coins."));
         }
     }
 
@@ -49,16 +49,17 @@ public class GameService {
     @Path("/register")
     @Produces(MediaType.APPLICATION_JSON)
     public Response register(User user) throws EmailAlreadyInUseException {
-        try{
-            this.manager.register(new User(user.getIdUser(),user.getName(), user.getSurname(), user.getEmail(), user.getPassword()));
+        try {
+            this.manager.register(new User(user.getIdUser(), user.getName(), user.getSurname(), user.getEmail(), user.getPassword()));
             return Response.status(201).entity(user).build();
-        } catch (EmailAlreadyInUseException e){
+        } catch (EmailAlreadyInUseException e) {
             e.printStackTrace();
             return Response.status(404).entity(user).build();
 
         }
 
     }
+
     @POST
     @ApiOperation(value = "User login", notes = "Authenticate an existing user")
     @ApiResponses(value = {
@@ -78,21 +79,24 @@ public class GameService {
             return Response.status(404).build();
         } catch (IncorrectPasswordException e) {
             return Response.status(401).build();
-        }}
+        }
+    }
 
     @GET
     @ApiOperation(value = "View the items from the shop", notes = "View items")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Item.class, responseContainer="List"),
+            @ApiResponse(code = 201, message = "Successful", response = Item.class, responseContainer = "List"),
     })
     @Path("/shop")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getShop() {
 
         List<Item> items = this.manager.Shop();
-        GenericEntity<List<Item>> entity = new GenericEntity<List<Item>>(items) {};
-        return Response.status(201).entity(entity).build()  ;
+        GenericEntity<List<Item>> entity = new GenericEntity<List<Item>>(items) {
+        };
+        return Response.status(201).entity(entity).build();
     }
+
     @PUT
     @ApiOperation(value = "Buy an item from the shop", notes = "Buy items")
     @ApiResponses(value = {
@@ -102,21 +106,19 @@ public class GameService {
             @ApiResponse(code = 403, message = "Insufficient money")
     })
     @Path("/buyItems/{idItem}/{name}/{idUser}")
-    public Response buyItems(@PathParam("idItem")String idItem,@PathParam("name") String name,@PathParam("idUser") String idUser) {
-        try{
-            this.usermanager.buyItem(idItem,name,idUser);
+    public Response buyItems(@PathParam("idItem") String idItem, @PathParam("name") String name, @PathParam("idUser") String idUser) {
+        try {
+            this.usermanager.buyItem(idItem, name, idUser);
             return Response.status(201).build();
-        }
-        catch (InsufficientMoneyException e){
+        } catch (InsufficientMoneyException e) {
             return Response.status(403).build();
-        }
-        catch (NonExistentItemException e) {
+        } catch (NonExistentItemException e) {
             return Response.status(401).build();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             return Response.status(409).build();
         }
     }
+
     @GET
     @ApiOperation(value = "View items in the user's Inventory", notes = "View Inventory")
     @ApiResponses(value = {
@@ -130,7 +132,8 @@ public class GameService {
 
         try {
             List<Inventory> inventory = this.inventorymanager.getInventory(idUser);
-            GenericEntity<List<Inventory>> entity = new GenericEntity<List<Inventory>>(inventory) {};
+            GenericEntity<List<Inventory>> entity = new GenericEntity<List<Inventory>>(inventory) {
+            };
             return Response.status(201).entity(entity).build();
         } catch (SQLException e) {
             return Response.status(500).build();
@@ -141,6 +144,7 @@ public class GameService {
         }
 
     }
+
     @PUT
     @ApiOperation(value = "update a User", notes = "Updating a User")
     @ApiResponses(value = {
@@ -151,26 +155,28 @@ public class GameService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(UpdateInfo info) {
-        try{
+        try {
             this.usermanager.updateUser(info);
             return Response.status(201).build();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             return Response.status(401).build();
         }
     }
+
     @GET
     @ApiOperation(value = "Obtain the FAQs", notes = "View FAQs")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = FAQ.class, responseContainer="List"),
+            @ApiResponse(code = 201, message = "Successful", response = FAQ.class, responseContainer = "List"),
     })
     @Path("/faqs")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getFAQs() {
         List<FAQ> faqs = this.manager.getFAQs();
-        GenericEntity<List<FAQ>> entity = new GenericEntity<List<FAQ>>(faqs){};
-        return Response.status(201).entity(entity).build()  ;
+        GenericEntity<List<FAQ>> entity = new GenericEntity<List<FAQ>>(faqs) {
+        };
+        return Response.status(201).entity(entity).build();
     }
+
     @POST
     @ApiOperation(value = "Report an abuse", notes = "Add a new abuse report")
     @ApiResponses(value = {
@@ -182,11 +188,28 @@ public class GameService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addReport(Report report) {
-        try{
+        try {
             this.usermanager.addReport(report);
             return Response.status(201).build();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             return Response.status(401).build();
+        }
+    }
+
+    @GET
+    @ApiOperation(value = "Get user by ID", notes = "Get user")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response = User.class),
+            @ApiResponse(code = 404, message = "Something went wrong")
+    })
+    @Path("/getUser/{idUser}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUser(@PathParam("idUser") String idUser) {
+        try {
+            User user = this.usermanager.getUser(idUser);
+            return Response.status(201).entity(user).build();
+        } catch (Exception E) {
+            return Response.status(404).build();
         }
     }
 }

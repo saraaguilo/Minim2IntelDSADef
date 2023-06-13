@@ -41,12 +41,12 @@ public class UserDAOImpl implements IUserDAO {
     }
 
 
-    public User getUser(String userId) {
+    public User getUser(String idUser) {
         Session session = null;
         User user = null;
         try {
             session = FactorySession.openSession();
-            user = (User)session.get(User.class, "idUser", userId);
+            user = (User)session.get(User.class, "idUser", idUser);
         }
         catch (Exception e) {
             e.printStackTrace();
